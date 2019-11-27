@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import fetch from 'isomorphic-unfetch';
+import './index.scss';
 
 const addReporter = async () => {
   const reporterId = await fetch('/api/create/reporter', {
@@ -33,6 +34,7 @@ const Home = ({ reporters }) => (
     <Head>
       <title>Home</title>
       <link rel="icon" href="/favicon.ico" />
+      <link rel="stylesheet" href="index.css" />
     </Head>
 
     <button onClick={addReporter}>Add new location</button>
@@ -41,7 +43,6 @@ const Home = ({ reporters }) => (
       {reporters
         .filter(l => l.reporter)
         .map((location, index) => {
-          console.log(location);
           const office = (
             <div className="location" key={index}>
               <h2>{location.reporter}</h2>
@@ -52,11 +53,11 @@ const Home = ({ reporters }) => (
                       <h3>{month.name}</h3>
                       {month.topics.map(topic => {
                         return (
-                          <div className="topic">
+                          <div className="topic" key={topic}>
                             <h4>{topic.name}</h4>
                             <ul>
                               {topic.notes.map(note => {
-                                return <li>{note}</li>;
+                                return <li key={note}>{note}</li>;
                               })}
                             </ul>
                           </div>

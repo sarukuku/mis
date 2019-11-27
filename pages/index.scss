@@ -1,0 +1,49 @@
+body {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.locations {
+  display: flex;
+  width: 100%;
+  outline: 1px solid red;
+  overflow-x: auto;
+}
+
+.location {
+  width: 100%;
+  min-width: 800px;
+  outline: 1px solid green;
+  
+  h2 {
+    border-bottom: 1px solid black;
+    margin: 0;
+    padding: 1rem;
+  }
+}
+
+.months {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.month {
+  min-width: 50%;
+  outline: 1px solid blue;
+  
+  h3 {
+    border-bottom: 1px solid black;
+    margin: 0;
+    padding: 1rem;
+  }
+}
+
+.topic {
+  text-align: left;
+  padding: 1rem;
+  border-bottom: 1px dotted purple;
+  height: 240px;
+  overflow-y: auto;
+}

@@ -22,10 +22,23 @@ export default (req, res) => {
               ]
             }
           ]
+        },
+        {
+          name: 'October',
+          topics: [
+            {
+              name: 'Recruitment',
+              notes: [
+                'Bear claw candy candy fruitcake carrot cake fruitcake.',
+                'Cupcake cake pudding tootsie roll'
+              ]
+            }
+          ]
         }
       ]
     }
   ]);
+  return;
 
   client.connect(async err => {
     const reports = client.db('data').collection('reports');

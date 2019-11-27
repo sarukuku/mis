@@ -8,9 +8,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@zeit/next-sass": "^1.0.1",
     "isomorphic-unfetch": "^3.0.0",
     "mongodb": "^3.3.3",
     "next": "9.1.1",
+    "node-sass": "^4.13.0",
     "nodemon": "^1.19.4",
     "react": "16.11.0",
     "react-dom": "16.11.0"
