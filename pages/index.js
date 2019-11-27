@@ -49,45 +49,19 @@ const Home = ({ reporters }) => (
                 {location.months.map(month => {
                   return (
                     <div className="month">
-                      <h3>June</h3>
-                      <div className="topic">
-                        <h4>Recruitment</h4>
-                        <ul>
-                          <li>Cupcake cake pudding tootsie roll</li>
-                          <li>
-                            Pudding candy gingerbread. Bear claw candy candy
-                            fruitcake carrot cake fruitcake.
-                          </li>
-                          <li>
-                            Gummi bears croissant powder jelly beans tart sugar
-                            plum pie bonbon. Candy marshmallow gummi bears cake
-                            tart tart. Fruitcake chupa chups pastry biscuit
-                            wafer danish biscuit topping macaroon.
-                          </li>
-                          <li>Cupcake cake pudding tootsie roll</li>
-                          <li>
-                            Pudding candy gingerbread. Bear claw candy candy
-                            fruitcake carrot cake fruitcake.
-                          </li>
-                          <li>
-                            Gummi bears croissant powder jelly beans tart sugar
-                            plum pie bonbon. Candy marshmallow gummi bears cake
-                            tart tart. Fruitcake chupa chups pastry biscuit
-                            wafer danish biscuit topping macaroon.
-                          </li>
-                          <li>Cupcake cake pudding tootsie roll</li>
-                          <li>
-                            Pudding candy gingerbread. Bear claw candy candy
-                            fruitcake carrot cake fruitcake.
-                          </li>
-                          <li>
-                            Gummi bears croissant powder jelly beans tart sugar
-                            plum pie bonbon. Candy marshmallow gummi bears cake
-                            tart tart. Fruitcake chupa chups pastry biscuit
-                            wafer danish biscuit topping macaroon.
-                          </li>
-                        </ul>
-                      </div>
+                      <h3>{month.name}</h3>
+                      {month.topics.map(topic => {
+                        return (
+                          <div className="topic">
+                            <h4>{topic.name}</h4>
+                            <ul>
+                              {topic.notes.map(note => {
+                                return <li>{note}</li>;
+                              })}
+                            </ul>
+                          </div>
+                        );
+                      })}
                     </div>
                   );
                 })}
