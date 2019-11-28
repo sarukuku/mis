@@ -1,8 +1,7 @@
 export default (req, res) => {
   const MongoClient = require('mongodb').MongoClient;
-  const uri =
-    'mongodb+srv://mis_server:Jm8AvdAKF4TMYkJx@mis-fuvmt.gcp.mongodb.net/test?retryWrites=true&w=majority';
-  const client = new MongoClient(uri, {
+  const MONGODB_URI = process.env.MONGODB_URI;
+  const client = new MongoClient(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   });
@@ -10,6 +9,36 @@ export default (req, res) => {
     {
       id: 'mocketymock',
       reporter: 'Hamsterdam',
+      months: [
+        {
+          name: 'November',
+          topics: [
+            {
+              name: 'Recruitment',
+              notes: [
+                'Cupcake cake pudding tootsie roll',
+                'Pudding candy gingerbread. Bear claw candy candy fruitcake carrot cake fruitcake.'
+              ]
+            }
+          ]
+        },
+        {
+          name: 'October',
+          topics: [
+            {
+              name: 'Recruitment',
+              notes: [
+                'Bear claw candy candy fruitcake carrot cake fruitcake.',
+                'Cupcake cake pudding tootsie roll'
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'mockery',
+      reporter: 'North Pole',
       months: [
         {
           name: 'November',

@@ -1,46 +1,37 @@
-const MongoClient = require("mongodb").MongoClient;
-const uri =
-  "mongodb+srv://mis_server:Jm8AvdAKF4TMYkJx@mis-fuvmt.gcp.mongodb.net/test?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true });
-client.connect(err => {
-  const db = client.db("data");
-  const reports = db.collection("reports");
+const express = require('express');
+const next = require('next');
+const bodyParser = require('body-parser');
+const PORT = process.env.PORT || 3000;
+const dev = process.env.NODE_DEV !== 'production';
+const nextApp = next({ dev });
+const handle = nextApp.getRequestHandler();
+const mongoose = require('mongoose');
 
-  // reports.find({}).limit(5).forEach(myDoc => {
-  //   console.log(myDoc.listing_url)
-  // })
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log('connected to MongoDB');
+  })
+  .catch(error => {
+    console.log('error connecting to MongoDB:', error.message);
+  });
 
-  reports.insertMany([
-    { reporter: "Helsinki", months: [] },
-    { reporter: "Amsterdam", months: [] },
-    { reporter: "New York", months: [] }
-  ]);
-
-  client.close();
-});
-
-const { createServer } = require("http");
-const { parse } = require("url");
-const next = require("next");
-
-const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev });
-const handle = app.getRequestHandler();
-
-app.prepare().then(() => {
-  createServer((req, res) => {
-    // Be sure to pass `true` as the second argument to `url.parse`.
-    // This tells it to parse the query portion of the URL.
-    const parsedUrl = parse(req.url, true);
-    const { pathname, query } = parsedUrl;
-
-    if (pathname === "/api/reports") {
-      app.render(req, res, "/b", query);
-    } else {
-      handle(req, res, parsedUrl);
+nextApp.prepare().then(() => {
+  const app = express();
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use('/api/reports', require('./routes/index'));
+  app.get('*', (req, res) => {
+    // console.log(req);
+    return handle(req, res); // react stuff
+  });
+  app.listen(PORT, err => {
+    if (err) {
+      throw err;
     }
-  }).listen(3000, err => {
-    if (err) throw err;
-    console.log("> Ready on http://localhost:3000");
+    console.log(`ready at http://localhost:${PORT}`);
   });
 });

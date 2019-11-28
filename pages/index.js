@@ -49,7 +49,7 @@ const Home = ({ reporters }) => (
               <div className="months">
                 {location.months.map(month => {
                   return (
-                    <div className="month">
+                    <div className="month" key={month.name}>
                       <h3>{month.name}</h3>
                       {month.topics.map(topic => {
                         return (
@@ -84,7 +84,7 @@ const Home = ({ reporters }) => (
 );
 
 Home.getInitialProps = async () => {
-  const response = await fetch('http://localhost:3000/api/get/reporters');
+  const response = await fetch(`http://localhost:3000/api/get/reporters`);
   const reporters = await response.json();
   return { reporters };
 };
