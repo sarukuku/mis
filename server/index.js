@@ -6,6 +6,7 @@ const dev = process.env.NODE_DEV !== 'production';
 const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler();
 const mongoose = require('mongoose');
+const reportRouter = require('./routes/index');
 
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -23,11 +24,12 @@ nextApp.prepare().then(() => {
   const app = express();
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
-  app.use('/api/reports', require('./routes/index'));
+
+  app.use('/api/report', reportRouter);
   app.get('*', (req, res) => {
-    // console.log(req);
     return handle(req, res); // react stuff
   });
+
   app.listen(PORT, err => {
     if (err) {
       throw err;
