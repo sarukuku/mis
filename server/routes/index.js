@@ -19,6 +19,14 @@ router.get('/:id', (req, res, next) => {
     next();
   });
 });
+
+router.delete('/:id', (req, res, next) => {
+  Report.findByIdAndDelete(req.params.id)
+      .then(res.status(204).end())
+      .catch(console.error)
+});
+
+
 // router
 //   .get('/:id', (req, res) => {
 //     return res.json(req.report);

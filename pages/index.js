@@ -2,6 +2,8 @@ import React from 'react';
 import Head from 'next/head';
 import fetch from 'isomorphic-unfetch';
 import './index.scss';
+import Nav from "../components/nav";
+import Office from "../components/office";
 
 const addReporter = async () => {
   const reporterId = await fetch('/api/create/reporter', {
@@ -34,51 +36,18 @@ const Home = ({ reporters }) => (
     <Head>
       <title>Home</title>
       <link rel="icon" href="/favicon.ico" />
-      <link rel="stylesheet" href="index.css" />
     </Head>
 
     <button onClick={addReporter}>Add new location</button>
-    <br></br>
+
     <div className="locations">
       {reporters
-        .filter(l => l.reporter)
-        .map((location, index) => {
-          const office = (
-            <div className="location" key={index}>
-              <h2>{location.reporter}</h2>
-              <div className="months">
-                {location.months.map(month => {
-                  return (
-                    <div className="month" key={month.name}>
-                      <h3>{month.name}</h3>
-                      {month.topics.map(topic => {
-                        return (
-                          <div className="topic" key={topic}>
-                            <h4>{topic.name}</h4>
-                            <ul>
-                              {topic.notes.map(note => {
-                                return <li key={note}>{note}</li>;
-                              })}
-                            </ul>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
-                <button
-                  onClick={() => {
-                    addMonth(location._id);
-                  }}
-                >
-                  Add new month
-                </button>
-              </div>
-            </div>
-          );
-          return office;
-        })}
+        .map((location) => <Office key={location.reporter} location={location} />)
+      }
     </div>
+
+
+
     <style jsx>{``}</style>
   </div>
 );
