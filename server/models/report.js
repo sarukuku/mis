@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
-const report = new schema({
+const reportSchema = new schema({
   name: { type: String },
   reporter: { type: String },
   months: [
@@ -12,4 +12,12 @@ const report = new schema({
   ]
 });
 
-module.exports = mongoose.model('report', report);
+reportSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  }
+});
+
+module.exports = mongoose.model('report', reportSchema);

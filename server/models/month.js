@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
-const month = new schema({
+const monthSchema = new schema({
   name: { type: String },
   topics: [
     {
@@ -11,4 +11,12 @@ const month = new schema({
   ]
 });
 
-module.exports = mongoose.model('month', month);
+monthSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  }
+});
+
+module.exports = mongoose.model('month', monthSchema);
