@@ -19,4 +19,4 @@ monthSchema.set('toJSON', {
   }
 });
 
-module.exports = mongoose.model('month', monthSchema);
+module.exports = mongoose.model('Month', monthSchema);

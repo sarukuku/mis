@@ -1,41 +1,4 @@
-const express = require('express');
-const router = express.Router();
-const Report = require('../models/report');
+const reportRouter = require('./report');
+const monthRouter = require('./month');
 
-router.post('/', async (req, res, next) => {
-  const report = new Report(req.body);
-  const result = await report.save();
-  res.status(200).json(result);
-});
-router.get('/', (req, res) => {
-  Report.find({}, (err, reports) => {
-    res.json(reports);
-  });
-});
-router.get('/:id', (req, res, next) => {
-  Report.findById(req.params.id, (err, photo) => {
-    if (err) res.status(500).send(err);
-    else req.photo = photo;
-    next();
-  });
-});
-
-router.delete('/:id', (req, res, next) => {
-  Report.findByIdAndDelete(req.params.id)
-      .then(res.status(204).end())
-      .catch(console.error)
-});
-
-
-// router
-//   .get('/:id', (req, res) => {
-//     return res.json(req.report);
-//   })
-//   .put('/:id', (req, res) => {
-//     Object.keys(req.body).map(key => {
-//       req.report[key] = req.body[key];
-//     });
-//     req.report.save();
-//     res.json(req.report);
-//   });
-module.exports = router;
+module.exports = { reportRouter, monthRouter };
