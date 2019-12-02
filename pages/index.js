@@ -84,7 +84,7 @@ const Home = ({ reporters }) => (
 );
 
 Home.getInitialProps = async () => {
-  const response = await fetch(`http://localhost:3000/api/get/reporters`);
+  const response = await fetch(`http://localhost:3000/api/report`);
   const reporters = await response.json();
   return { reporters };
 };
