@@ -1,3 +1,3 @@
 # MIS
 
-Marketing someting something
+Marketing someting something.
