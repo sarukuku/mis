@@ -5,23 +5,17 @@ const Month = require('../models/month');
 
 router.post('/:reportId', async (req, res, next) => {
     const month = new Month(req.body);
+    const reportId = req.params.reportId;
 
-    const result = await month.save()
+    await month.save()
         .then(() => {
             console.log(month);
-            Report.update({ _id: req.params.reportId}, { $push: { months: month } })
+            Report.update({ _id: reportId }, { $push: { months: month } })
                 .then(console.log)
                 .catch(console.error)
         });
-    res.status(200).json(result);
+    const report = await Report.findOne({_id: reportId }).populate('months');
+    res.status(200).json(report.months);
 });
-
-router.get('/', (req, res) => {
-    Report.find({}, (err, reports) => {
-        res.json(reports);
-    });
-});
-
-
 
 module.exports = router;

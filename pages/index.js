@@ -3,7 +3,7 @@ import Head from 'next/head';
 import fetch from 'isomorphic-unfetch';
 import './index.scss';
 import Nav from "../components/nav";
-import Office from "../components/office";
+import Report from "../components/report";
 
 const addReporter = async () => {
   const reporterId = await fetch('/api/create/reporter', {
@@ -14,21 +14,6 @@ const addReporter = async () => {
     body: JSON.stringify({ reporter: 'New Location' })
   });
   return reporterId;
-};
-
-const addMonth = async reporterId => {
-  const months = await fetch('/api/update/reporter', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      reporter: {
-        _id: reporterId,
-        months: [{ name: 'January' }]
-      }
-    })
-  });
 };
 
 const Home = ({ reporters }) => (
@@ -42,7 +27,7 @@ const Home = ({ reporters }) => (
 
     <div className="locations">
       {reporters
-        .map((location) => <Office key={location.reporter} location={location} />)
+        .map((location) => <Report key={location.reporter} location={location} />)
       }
     </div>
 

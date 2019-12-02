@@ -4,7 +4,7 @@ import Topic from "./topic";
 const Month = ({ month }) => {
 
     return (
-        <div className="month" key={month.name}>
+        <div className="month" >
             <h3>{month.name}</h3>
 
             {month.topics.map(topic =>  <Topic key={topic} topic={topic} />)}
