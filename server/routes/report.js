@@ -10,7 +10,13 @@ router.post('/', async (req, res, next) => {
 router.get('/', (req, res) => {
   Report.find({}, (err, reports) => {
     res.json(reports)
-  }).populate('months')
+  }).populate({
+    path: 'months',
+    populate: {
+      path: 'topics',
+      model: 'Topic'
+    }
+  })
 })
 
 router.get('/:id', (req, res, next) => {

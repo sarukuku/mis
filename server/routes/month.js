@@ -2,6 +2,20 @@ const express = require('express')
 const router = express.Router()
 const Report = require('../models/report')
 const Month = require('../models/month')
+const Topic = require('../models/topic')
+
+router.post('/topic/:reportId/:monthId', async (req, res, next) => {
+  const reportId = req.params.reportId
+  const monthId = req.params.monthId
+  const newTopic = new Topic(req.body)
+  await newTopic.save()
+  Month.update({ _id: monthId }, { $push: { topics: newTopic } })
+    .then(console.log)
+    .catch(console.error)
+
+  const report = await Report.findOne({ _id: reportId }).populate('months')
+  res.status(200).json(report.months)
+})
 
 router.post('/:reportId', async (req, res, next) => {
   const month = new Month(req.body)
