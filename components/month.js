@@ -1,16 +1,32 @@
-import React from 'react';
-import Topic from "./topic";
+import React from 'react'
+import Topic from './topic'
+import fetch from 'isomorphic-unfetch'
 
-const Month = ({ month }) => {
+const Month = ({ reportId, month, setMonths }) => {
+  // TODO show a dialog "Hey, are you sure?"
+  const deleteMonth = async (reportId, monthId) => {
+    const months = await fetch(`/api/month/${reportId}/${monthId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name: month, topics: [] })
+    }).then(m => m.json())
 
-    return (
-        <div className="month" >
-            <h3>{month.name}</h3>
+    setMonths([...months])
+  }
 
-            {month.topics.map(topic =>  <Topic key={topic} topic={topic} />)}
+  return (
+    <div className="month">
+      <h3>
+        {month.name}
+        <button onClick={() => deleteMonth(reportId, month.id)}>DELETE</button>
+      </h3>
+      {month.topics.map(topic => (
+        <Topic key={topic} topic={topic} />
+      ))}
+    </div>
+  )
+}
 
-        </div>
-    );
-};
-
-export default Month;
+export default Month

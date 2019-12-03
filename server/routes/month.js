@@ -1,21 +1,37 @@
-const express = require('express');
-const router = express.Router();
-const Report = require('../models/report');
-const Month = require('../models/month');
+const express = require('express')
+const router = express.Router()
+const Report = require('../models/report')
+const Month = require('../models/month')
 
 router.post('/:reportId', async (req, res, next) => {
-    const month = new Month(req.body);
-    const reportId = req.params.reportId;
+  const month = new Month(req.body)
+  const reportId = req.params.reportId
 
-    await month.save()
-        .then(() => {
-            console.log(month);
-            Report.update({ _id: reportId }, { $push: { months: month } })
-                .then(console.log)
-                .catch(console.error)
-        });
-    const report = await Report.findOne({_id: reportId }).populate('months');
-    res.status(200).json(report.months);
-});
+  await month.save().then(() => {
+    console.log(month)
+    Report.update({ _id: reportId }, { $push: { months: month } })
+      .then(console.log)
+      .catch(console.error)
+  })
+  const report = await Report.findOne({ _id: reportId }).populate('months')
+  res.status(200).json(report.months)
+})
 
-module.exports = router;
+router.delete('/:reportId/:monthId', async (req, res, next) => {
+  const reportId = req.params.reportId
+  const monthId = req.params.monthId
+
+  const month = await Month.findOne({ _id: monthId })
+
+  // TODO maybe we should return a not found message
+  if (!!month) {
+    await Report.update({ _id: reportId }, { $pull: { months: { _id: monthId } } })
+      .then(() => month.delete())
+      .catch(console.error)
+  }
+
+  const report = await Report.findOne({ _id: reportId }).populate('months')
+  res.status(200).json(report.months)
+})
+
+module.exports = router

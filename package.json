@@ -6,7 +6,8 @@
     "dev": "node ./server/index.js",
     "build": "next build",
     "start": "next start",
-    "watch": "nodemon --exec npm run dev -- ./server/index.js"
+    "watch": "nodemon --exec npm run dev -- ./server/index.js",
+    "pretty": "prettier --write \"./**/*.{js,jsx,json}\""
   },
   "dependencies": {
     "@zeit/next-sass": "^1.0.1",
@@ -20,6 +21,7 @@
     "next": "9.1.1",
     "node-sass": "^4.13.0",
     "nodemon": "^1.19.4",
+    "prettier": "^1.19.1",
     "react": "16.11.0",
     "react-dom": "16.11.0"
   }

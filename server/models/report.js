@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const schema = mongoose.Schema
 
 const reportSchema = new schema({
   name: { type: String },
@@ -10,14 +10,14 @@ const reportSchema = new schema({
       ref: 'Month'
     }
   ]
-});
+})
 
 reportSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
   }
-});
+})
 
-module.exports = mongoose.model('Report', reportSchema);
+module.exports = mongoose.model('Report', reportSchema)

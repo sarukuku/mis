@@ -1,46 +1,55 @@
-import React from 'react';
-import Head from 'next/head';
-import fetch from 'isomorphic-unfetch';
-import './index.scss';
-import Nav from "../components/nav";
-import Report from "../components/report";
+import React, { useState, useEffect } from 'react'
+import Head from 'next/head'
+import fetch from 'isomorphic-unfetch'
+import './index.scss'
+import Report from '../components/report'
 
-const addReporter = async () => {
-  const reporterId = await fetch('/api/create/reporter', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ reporter: 'New Location' })
-  });
-  return reporterId;
-};
+const Home = () => {
+  const [reporters, setReporters] = useState([])
+  const [reporter, setReporter] = useState('')
 
-const Home = ({ reporters }) => (
-  <div>
-    <Head>
-      <title>Home</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
+  const fetchReporters = () => {
+    return fetch(`http://localhost:3000/api/report`).then(res => res.json())
+  }
 
-    <button onClick={addReporter}>Add new location</button>
+  useEffect(() => {
+    fetchReporters().then(reporters => setReporters(reporters))
+  }, [])
 
-    <div className="locations">
-      {reporters
-        .map((location) => <Report key={location.reporter} location={location} />)
-      }
+  const addReporter = async () => {
+    await fetch('/api/report', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ reporter })
+    })
+    fetchReporters().then(reporters => setReporters(reporters))
+  }
+
+  const onChangeHandle = text => {
+    setReporter(text)
+  }
+
+  return (
+    <div>
+      <Head>
+        <title>Home</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <input type="text" onChange={e => onChangeHandle(e.target.value)} />
+      <button onClick={addReporter}>Add new location</button>
+
+      <div className="locations">
+        {reporters.map(location => (
+          <Report key={location.reporter} location={location} />
+        ))}
+      </div>
+
+      <style jsx>{``}</style>
     </div>
+  )
+}
 
-
-
-    <style jsx>{``}</style>
-  </div>
-);
-
-Home.getInitialProps = async () => {
-  const response = await fetch(`http://localhost:3000/api/report`);
-  const reporters = await response.json();
-  return { reporters };
-};
-
-export default Home;
+export default Home
