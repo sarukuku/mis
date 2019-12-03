@@ -1,4 +1,5 @@
 const reportRouter = require('./report')
 const monthRouter = require('./month')
+const topicRouter = require('./topic')
 
-module.exports = { reportRouter, monthRouter }
+module.exports = { reportRouter, monthRouter, topicRouter }

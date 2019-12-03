@@ -58,9 +58,11 @@ router.delete('/:reportId/:monthId', async (req, res, next) => {
 
   // TODO maybe we should return a not found message
   if (!!month) {
-    await Report.update({ _id: reportId }, { $pull: { months: { _id: monthId } } })
-      .then(() => month.delete())
-      .catch(console.error)
+    await Report.updateOne({ _id: reportId }, { $pull: { months: { _id: monthId } } })
+
+    await Topic.deleteMany({ _id: { $in: month.topics } })
+
+    await Month.deleteOne({ _id: monthId })
   }
 
   const report = await Report.findOne({ _id: reportId }).populate({

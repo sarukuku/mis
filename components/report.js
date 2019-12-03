@@ -38,7 +38,9 @@ const Report = ({ location }) => {
         Add new month
         <select onChange={e => addMonth(location.id, e.target.value)}>
           {availableMonths.map(m => (
-            <option value={m}>{m}</option>
+            <option key={m} value={m}>
+              {m}
+            </option>
           ))}
         </select>
       </div>

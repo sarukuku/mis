@@ -6,7 +6,7 @@ const dev = process.env.NODE_DEV !== 'production'
 const nextApp = next({ dev })
 const handle = nextApp.getRequestHandler()
 const mongoose = require('mongoose')
-const { reportRouter, monthRouter } = require('./routes/index')
+const { reportRouter, monthRouter, topicRouter } = require('./routes/index')
 
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -27,6 +27,8 @@ nextApp.prepare().then(() => {
 
   app.use('/api/report', reportRouter)
   app.use('/api/month', monthRouter)
+  app.use('/api/topic', topicRouter)
+
   app.get('*', (req, res) => {
     return handle(req, res) // react stuff
   })
