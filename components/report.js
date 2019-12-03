@@ -4,7 +4,7 @@ import Topic from './topic'
 import fetch from 'isomorphic-unfetch'
 
 const Report = ({ location }) => {
-  const MONTHS = ['January', 'February', 'March']
+  const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
   const [months, setMonths] = useState([])
 
