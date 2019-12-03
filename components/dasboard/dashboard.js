@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import Report from './report'
+import Report from '../report'
 import fetch from 'isomorphic-unfetch'
+import './style.scss'
 
 const Dashboard = () => {
   const [reports, setReports] = useState([])

@@ -2,11 +2,12 @@ import React from 'react'
 import Head from 'next/head'
 import './index.scss'
 
-import Dashboard from '../components/dashboard'
+import Dashboard from '../components/dasboard/dashboard'
+import { MuiThemeProvider } from 'material-ui'
 
 const Home = () => {
   return (
-    <div>
+    <MuiThemeProvider>
       <Head>
         <title>Home</title>
         <link rel="icon" href="/favicon.ico" />
@@ -16,7 +17,7 @@ const Home = () => {
       <Dashboard />
 
       <style jsx>{``}</style>
-    </div>
+    </MuiThemeProvider>
   )
 }
 

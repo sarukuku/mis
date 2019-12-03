@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import fetch from 'isomorphic-unfetch'
+import { TextField } from 'material-ui'
 
 const Topic = ({ topic }) => {
   const { name } = topic
@@ -47,7 +48,8 @@ const Topic = ({ topic }) => {
     <div className="topic">
       <h4>{name}</h4>
       <ul>{allNotes}</ul>
-      <input type="text" value={newNote} onChange={e => setNewNote(e.target.value)} />
+      {/*<input type="text" value={newNote} onChange={e => setNewNote(e.target.value)} />*/}
+      <TextField value={newNote} onChange={e => setNewNote(e.target.value)} hintText="Write here a note :)" />
       <button onClick={createNote}>Add Note</button>
     </div>
   )
