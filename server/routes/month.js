@@ -13,7 +13,13 @@ router.post('/topic/:reportId/:monthId', async (req, res, next) => {
     .then(console.log)
     .catch(console.error)
 
-  const report = await Report.findOne({ _id: reportId }).populate('months')
+  const report = await Report.findOne({ _id: reportId }).populate({
+    path: 'months',
+    populate: {
+      path: 'topics',
+      model: 'Topic'
+    }
+  })
   res.status(200).json(report.months)
 })
 
