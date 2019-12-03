@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node ./server/index.js",
-    "build": "next build",
-    "start": "next start",
+    "start": "node ./server/index.js",
     "watch": "nodemon --exec npm run dev -- ./server/index.js",
     "pretty": "prettier --write \"./**/*.{js,jsx,json}\""
   },
