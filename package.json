@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./server/index.js",
-    "watch": "nodemon --exec npm run dev -- ./server/index.js",
+    "watch": "nodemon --exec npm run start -- ./server/index.js",
     "pretty": "prettier --write \"./**/*.{js,jsx,json}\""
   },
   "dependencies": {
