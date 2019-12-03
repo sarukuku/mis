@@ -23,8 +23,7 @@ const Month = ({ reportId, month, setMonths }) => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name: month, topics: [] })
+      }
     }).then(m => m.json())
 
     setMonths([...months])
