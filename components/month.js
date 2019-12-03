@@ -5,6 +5,7 @@ import fetch from 'isomorphic-unfetch'
 const Month = ({ reportId, month, setMonths }) => {
   const [newTopicName, setNewTopicName] = useState('')
 
+  // TODO: the topics should be predefined when a new month is added
   const addTopic = async (reportId, monthId) => {
     const months = await fetch(`/api/month/topic/${reportId}/${monthId}`, {
       method: 'POST',

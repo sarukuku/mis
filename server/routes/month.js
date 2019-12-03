@@ -27,6 +27,13 @@ router.post('/:reportId', async (req, res, next) => {
   const month = new Month(req.body)
   const reportId = req.params.reportId
 
+  // setting the defaults
+  const marketing = await new Topic({ name: 'Marketing' }).save()
+  const business = await new Topic({ name: 'Business' }).save()
+  const brand = await new Topic({ name: 'Brand' }).save()
+  const internal = await new Topic({ name: 'Internal' }).save()
+  month.topics = [marketing, business, brand, internal]
+
   await month.save().then(() => {
     console.log(month)
     Report.update({ _id: reportId }, { $push: { months: month } })
