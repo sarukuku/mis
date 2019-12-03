@@ -36,7 +36,7 @@ const Topic = ({ topic }) => {
       ? notes.map((note, key) => {
           return (
             <li key={`${note}-${key}`}>
-              <p>{note}</p>
+              <span>{note}</span>
               <button onClick={() => deleteNote(note)}>[delete]</button>
             </li>
           )

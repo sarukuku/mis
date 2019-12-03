@@ -10,6 +10,7 @@ const Home = () => {
       <Head>
         <title>Home</title>
         <link rel="icon" href="/favicon.ico" />
+        <style>@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');</style>
       </Head>
 
       <Dashboard />
