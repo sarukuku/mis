@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import fetch from 'isomorphic-unfetch'
-import { TextField } from 'material-ui'
+import { LabeledInput } from './labeledInput'
 
 const Topic = ({ topic }) => {
   const { name } = topic
@@ -48,9 +48,7 @@ const Topic = ({ topic }) => {
     <div className="topic">
       <h4>{name}</h4>
       <ul>{allNotes}</ul>
-      {/*<input type="text" value={newNote} onChange={e => setNewNote(e.target.value)} />*/}
-      <TextField value={newNote} onChange={e => setNewNote(e.target.value)} hintText="Write here a note :)" />
-      <button onClick={createNote}>Add Note</button>
+      <LabeledInput value={newNote} valueSetter={setNewNote} submitHandler={createNote} />
     </div>
   )
 }
