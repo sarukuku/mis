@@ -43,14 +43,12 @@ const Topic = ({ topic }) => {
     notes && notes.length
       ? notes.map((note, key) => {
           return (
-            <List dense="true" disablePadding="true" key={`${note}-${key}`}>
-              <ListItem disableGutters="true">
-                <ListItemText primary={note} />
-                <IconButton aria-label="delete" size="small" onClick={() => deleteNote(note)}>
-                  <DeleteIcon fontSize="inherit" />
-                </IconButton>
-              </ListItem>
-            </List>
+            <ListItem disableGutters="true" key={`${note}-${key}`}>
+              <ListItemText primary={note} />
+              <IconButton aria-label="delete" size="small" onClick={() => deleteNote(note)}>
+                <DeleteIcon fontSize="inherit" />
+              </IconButton>
+            </ListItem>
           )
         })
       : ''
@@ -58,7 +56,9 @@ const Topic = ({ topic }) => {
   return (
     <div className="topic">
       <Typography component="h4">{name}</Typography>
-      <ul>{allNotes}</ul>
+      <List dense="true" disablePadding="true">
+        {allNotes}
+      </List>
       <LabeledInput value={newNote} valueSetter={setNewNote} submitHandler={createNote} />
     </div>
   )
