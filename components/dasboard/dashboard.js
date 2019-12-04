@@ -2,29 +2,18 @@ import React, { useEffect, useState } from 'react'
 import Report from '../report'
 import fetch from 'isomorphic-unfetch'
 import './style.scss'
+import CheckBoxFilterHorizontal from '../checboxFilterHorizontal'
 
 const Dashboard = () => {
   const [reports, setReports] = useState([])
   const [newReporter, setNewReporter] = useState('')
-  const [filteredReporters, setFilteredReporters] = useState({})
-
-  const handleFilteredReporter = (reporter, checked) => {
-    filteredReporters[reporter] = checked
-    setFilteredReporters({ ...filteredReporters })
-  }
 
   const fetchReporters = () => {
     return fetch(`http://localhost:3000/api/report`).then(res => res.json())
   }
 
   useEffect(() => {
-    fetchReporters().then(r => {
-      setReports(r)
-
-      // initialize filters
-      r.map(rf => (filteredReporters[rf.reporter] = true))
-      setFilteredReporters({ ...filteredReporters })
-    })
+    fetchReporters().then(setReports)
   }, [])
 
   const addReporter = async () => {
@@ -41,27 +30,14 @@ const Dashboard = () => {
 
   return (
     <>
-      <div>
-        {reports.map(r => (
-          <span key={`filter-${r.reporter}`}>
-            <label>{r.reporter}</label>
-            <input
-              type="checkbox"
-              checked={!!filteredReporters[r.reporter]}
-              onChange={e => handleFilteredReporter(r.reporter, e.target.checked)}
-            />
-          </span>
-        ))}
-      </div>
-
+      <CheckBoxFilterHorizontal elements={reports} setElements={setReports} label={'reporter'} />
       <div>
         <input type="text" value={newReporter} onChange={e => setNewReporter(e.target.value)} />
         <button onClick={addReporter}>Add new Report</button>
       </div>
-
       <div className="locations">
         {reports
-          .filter(r => !!filteredReporters[r.reporter])
+          .filter(r => !r.hidden)
           .map(r => (
             <Report key={r.reporter} location={r} />
           ))}
