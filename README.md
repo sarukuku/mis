@@ -1,6 +1,6 @@
 # MIS
 
-˜˜Marketing IS (what is it called?)˜˜
+~~Marketing IS (what is it called?)~~
 
 **MAKE MARKETING GREAT AGAIN**
 
