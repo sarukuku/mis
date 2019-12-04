@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Report from '../report'
 import fetch from 'isomorphic-unfetch'
 import './style.scss'
-import CheckBoxFilterHorizontal from '../checboxFilterHorizontal'
-import { LabeledInput } from '../labeledInput'
+import Navbar from '../navbar/navbar'
 
-const Dashboard = () => {
+export const Dashboard = () => {
   const [reports, setReports] = useState([])
   const [newReporter, setNewReporter] = useState('')
 
@@ -31,8 +30,13 @@ const Dashboard = () => {
 
   return (
     <>
-      <CheckBoxFilterHorizontal elements={reports} setElements={setReports} label={'reporter'} />
-      <LabeledInput value={newReporter} valueSetter={setNewReporter} submitHandler={addReporter} hint="Add new reporter" />
+      <Navbar
+        reports={reports}
+        setReports={setReports}
+        newReporter={newReporter}
+        setNewReporter={setNewReporter}
+        addReporter={addReporter}
+      />
       <div className="locations">
         {reports
           .filter(r => !r.hidden)
