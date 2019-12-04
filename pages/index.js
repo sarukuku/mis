@@ -2,7 +2,7 @@ import React from 'react'
 import Head from 'next/head'
 import './index.scss'
 
-import Dashboard from '../components/dasboard/dashboard'
+import { Dashboard } from '../components/dashboard/dashboard'
 import { MuiThemeProvider } from 'material-ui'
 
 const Home = () => {
