@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Month from './month'
+import Month from './month/month'
 import fetch from 'isomorphic-unfetch'
 
 const Report = ({ location }) => {
