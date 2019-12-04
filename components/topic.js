@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import fetch from 'isomorphic-unfetch'
 import { LabeledInput } from './labeledInput'
+import { IconButton } from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 const Topic = ({ topic }) => {
   const { name } = topic
@@ -38,7 +40,9 @@ const Topic = ({ topic }) => {
           return (
             <li key={`${note}-${key}`}>
               <span>{note}</span>
-              <button onClick={() => deleteNote(note)}>[delete]</button>
+              <IconButton aria-label="delete" size="small" onClick={() => deleteNote(note)}>
+                <DeleteIcon fontSize="inherit" />
+              </IconButton>
             </li>
           )
         })
