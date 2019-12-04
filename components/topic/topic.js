@@ -1,6 +1,13 @@
 import React, { useState } from 'react'
 import fetch from 'isomorphic-unfetch'
-import { LabeledInput } from './labeledInput'
+import { LabeledInput } from '../labeledInput'
+import { IconButton } from '@material-ui/core'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Typography from '@material-ui/core/Typography'
+import DeleteIcon from '@material-ui/icons/Delete'
+import './style.scss'
 
 const Topic = ({ topic }) => {
   const { name } = topic
@@ -36,18 +43,22 @@ const Topic = ({ topic }) => {
     notes && notes.length
       ? notes.map((note, key) => {
           return (
-            <li key={`${note}-${key}`}>
-              <span>{note}</span>
-              <button onClick={() => deleteNote(note)}>[delete]</button>
-            </li>
+            <ListItem disableGutters="true" key={`${note}-${key}`}>
+              <ListItemText primary={note} />
+              <IconButton aria-label="delete" size="small" onClick={() => deleteNote(note)}>
+                <DeleteIcon fontSize="inherit" />
+              </IconButton>
+            </ListItem>
           )
         })
       : ''
 
   return (
     <div className="topic">
-      <h4>{name}</h4>
-      <ul>{allNotes}</ul>
+      <Typography component="h4">{name}</Typography>
+      <List dense="true" disablePadding="true">
+        {allNotes}
+      </List>
       <LabeledInput value={newNote} valueSetter={setNewNote} submitHandler={createNote} hint="Add new note" />
     </div>
   )
