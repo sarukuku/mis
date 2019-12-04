@@ -59,7 +59,7 @@ const Topic = ({ topic }) => {
       <List dense="true" disablePadding="true">
         {allNotes}
       </List>
-      <LabeledInput value={newNote} valueSetter={setNewNote} submitHandler={createNote} />
+      <LabeledInput value={newNote} valueSetter={setNewNote} submitHandler={createNote} hint="Add new note" />
     </div>
   )
 }
