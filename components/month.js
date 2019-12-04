@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Topic from './topic'
+import Topic from './topic/topic'
 import fetch from 'isomorphic-unfetch'
 
 const Month = ({ reportId, month, setMonths }) => {
