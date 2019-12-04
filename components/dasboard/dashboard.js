@@ -3,6 +3,7 @@ import Report from '../report'
 import fetch from 'isomorphic-unfetch'
 import './style.scss'
 import CheckBoxFilterHorizontal from '../checboxFilterHorizontal'
+import { LabeledInput } from '../labeledInput'
 
 const Dashboard = () => {
   const [reports, setReports] = useState([])
@@ -31,10 +32,7 @@ const Dashboard = () => {
   return (
     <>
       <CheckBoxFilterHorizontal elements={reports} setElements={setReports} label={'reporter'} />
-      <div>
-        <input type="text" value={newReporter} onChange={e => setNewReporter(e.target.value)} />
-        <button onClick={addReporter}>Add new Report</button>
-      </div>
+      <LabeledInput value={newReporter} valueSetter={setNewReporter} submitHandler={addReporter} hint="Add new reporter" />
       <div className="locations">
         {reports
           .filter(r => !r.hidden)

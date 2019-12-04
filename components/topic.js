@@ -48,7 +48,7 @@ const Topic = ({ topic }) => {
     <div className="topic">
       <h4>{name}</h4>
       <ul>{allNotes}</ul>
-      <LabeledInput value={newNote} valueSetter={setNewNote} submitHandler={createNote} />
+      <LabeledInput value={newNote} valueSetter={setNewNote} submitHandler={createNote} hint="Add new note" />
     </div>
   )
 }
