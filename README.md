@@ -1,8 +1,6 @@
-# MIS
+# MIS tool
 
-~~Marketing IS (what is it called?)~~
-
-**MAKE MARKETING GREAT AGAIN**
+A tool to **MAKE MARKETING GREAT AGAIN!** And by the way MIS stands for Marketing International Sync.
 
 ## Getting Started
 
