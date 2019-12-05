@@ -3,6 +3,7 @@ const schema = mongoose.Schema
 
 const monthSchema = new schema({
   name: { type: String },
+  date: { type: Date },
   topics: [
     {
       type: mongoose.Schema.Types.ObjectId,

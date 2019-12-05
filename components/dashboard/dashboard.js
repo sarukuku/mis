@@ -4,12 +4,16 @@ import fetch from 'isomorphic-unfetch'
 import './style.scss'
 import Navbar from '../navbar/navbar'
 
-export const Dashboard = () => {
+// TODO add this to the filter
+const nMonths = 3
+
+const Dashboard = () => {
   const [reports, setReports] = useState([])
   const [newReporter, setNewReporter] = useState('')
 
   const fetchReporters = () => {
-    return fetch(`http://localhost:3000/api/report`).then(res => res.json())
+    return fetch(`http://localhost:3000/api/report?nMonths=${nMonths}`)
+        .then(res => res.json())
   }
 
   useEffect(() => {
