@@ -13,11 +13,13 @@ router.post('/:topicId', async (req, res, next) => {
   res.status(200).json(topic.notes)
 })
 
-router.delete('/:topicId/:note', async (req, res, next) => {
-  const { topicId, note } = req.params
+router.delete('/:topicId/:indexOfNote', async (req, res, next) => {
+  const { topicId, indexOfNote } = req.params
 
-  await Topic.updateOne({ _id: topicId }, { $pull: { notes: note } })
   const topic = await Topic.findOne({ _id: topicId })
+
+  topic.notes.splice(indexOfNote, 1)
+  topic.save()
 
   res.status(200).json(topic.notes)
 })

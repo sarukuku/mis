@@ -28,8 +28,8 @@ const Topic = ({ topic }) => {
     setNewNote('')
   }
 
-  const deleteNote = async note => {
-    const notes = await fetch(`/api/topic/${topic.id}/${note}`, {
+  const deleteNote = async indexOfNote => {
+    const notes = await fetch(`/api/topic/${topic.id}/${indexOfNote}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ const Topic = ({ topic }) => {
           return (
             <ListItem disableGutters="true" key={`${note}-${key}`}>
               <ListItemText primary={note} />
-              <IconButton aria-label="delete" size="small" onClick={() => deleteNote(note)}>
+              <IconButton aria-label="delete" size="small" onClick={() => deleteNote(key)}>
                 <DeleteIcon fontSize="inherit" />
               </IconButton>
             </ListItem>
