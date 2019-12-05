@@ -24,7 +24,7 @@ const CheckBoxFilterHorizontal = ({ elements, setElements, label }) => {
       {elements.map(el => (
         <FormControlLabel
           key={`filter-${el[label]}`}
-          control={<Checkbox checked={!el.hidden} color="primary" onChange={e => handleElementChange(el, e.target.checked)} />}
+          control={<Checkbox checked={!el.hidden} color="default" onChange={e => handleElementChange(el, e.target.checked)} />}
           label={el[label]}
         />
       ))}
