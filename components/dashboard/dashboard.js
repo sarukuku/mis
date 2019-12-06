@@ -12,7 +12,12 @@ const Dashboard = () => {
   const [newReporter, setNewReporter] = useState('')
 
   const fetchReporters = () => {
-    return fetch(`http://localhost:3000/api/report?nMonths=${nMonths}`).then(res => res.json())
+    return fetch(`/api/report?nMonths=${nMonths}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
   }
 
   useEffect(() => {
