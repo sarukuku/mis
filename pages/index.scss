@@ -18,9 +18,10 @@ body {
   outline: 1px solid lightgray;
   
   h2 {
-    border-bottom: 1px solid black;
+    text-align: left;
+    border-bottom: 1px solid #d9dada;
     margin: 0;
-    padding: 1rem;
+    padding: 16px 24px 16px 24px;
   }
 }
 
@@ -36,11 +37,12 @@ body {
 }
 
 .month {
-  min-width: 50%;
+  width: 40%;
+  max-width: 430px;
 
   h3 {
-    border-bottom: 1px solid black;
+    text-align: left;
     margin: 0;
-    padding: 1rem;
+    padding: 16px 24px 4px 24px;
   }
 }
