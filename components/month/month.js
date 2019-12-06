@@ -39,6 +39,7 @@ const Month = ({ reportId, month, setMonths }) => {
           <DeleteIcon fontSize={'inherit'} />
         </IconButton>
       </Typography>
+
       {month.topics.map(topic => (
         <Topic key={`${topic.name}-${month.id}`} topic={topic} />
       ))}

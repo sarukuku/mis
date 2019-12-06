@@ -2,6 +2,7 @@ body {
   font-family: 'Roboto', sans-serif;
   margin: 0 auto;
   text-align: center;
+  background-color: #F7F8FA
 }
 
 .locations {
@@ -14,7 +15,7 @@ body {
 .location {
   width: 100%;
   min-width: 800px;
-  outline: 1px solid green;
+  outline: 1px solid lightgray;
   
   h2 {
     border-bottom: 1px solid black;
@@ -36,8 +37,7 @@ body {
 
 .month {
   min-width: 50%;
-  outline: 1px solid blue;
-  
+
   h3 {
     border-bottom: 1px solid black;
     margin: 0;
