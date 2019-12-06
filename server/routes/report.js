@@ -9,9 +9,7 @@ router.post('/', async (req, res, next) => {
   res.status(200).json(result)
 })
 
-
 router.get('/', async (req, res) => {
-
   const { nMonths } = req.query
 
   const reports = await Report.find({}).populate({
@@ -43,18 +41,16 @@ router.delete('/:id', (req, res, next) => {
     .catch(console.error)
 })
 
-
 const checkMonths = async (report, nMonths) => {
-
   const { id, months } = report
   let windowDate = new Date()
-  windowDate.setMonth( -nMonths)
+  windowDate.setMonth(-nMonths)
 
-  let indexMonthReport = 0;
-  let indexMonthWindow = 0;
+  let indexMonthReport = 0
+  let indexMonthWindow = 0
 
-  while (!!months[indexMonthReport] &&  months[indexMonthReport].date.getMonth() < windowDate.getMonth()) {
-    indexMonthReport++;
+  while (!!months[indexMonthReport] && months[indexMonthReport].date.getMonth() < windowDate.getMonth()) {
+    indexMonthReport++
   }
 
   while (indexMonthWindow < nMonths) {
@@ -62,12 +58,12 @@ const checkMonths = async (report, nMonths) => {
 
     if (!!monthReport && windowDate.getMonth() === monthReport.date.getMonth()) {
       indexMonthReport++
-    } else if (!monthReport || monthReport.date.getMonth() > windowDate.getMonth())  {
+    } else if (!monthReport || monthReport.date.getMonth() > windowDate.getMonth()) {
       months.splice(indexMonthReport, 0, await createMonth(id, { name: getMonthName(windowDate.getMonth()), date: windowDate }))
       indexMonthReport++
     }
 
-    indexMonthWindow++;
+    indexMonthWindow++
     windowDate.setMonth(windowDate.getMonth() + 1)
   }
   report.save()

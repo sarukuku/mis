@@ -1,18 +1,29 @@
 import React from 'react'
-import { TextField } from 'material-ui'
-import { Button, Container } from '@material-ui/core'
+import { Input, InputAdornment, IconButton } from '@material-ui/core'
+import { AddCircleOutline as AddIcon } from '@material-ui/icons'
 
-export const LabeledInput = ({ value, valueSetter, submitHandler, hint }) => {
+export const LabeledInput = ({ value, valueSetter, submitHandler, hint, formClass }) => {
   const submitWrapper = e => {
     e.preventDefault()
     submitHandler()
   }
+
   return (
-    <form onSubmit={submitWrapper}>
-      <TextField value={value} color="primary" onChange={e => valueSetter(e.target.value)} hintText={hint} />
-      <Button variant="outlined" color="default" size="small" onClick={submitHandler}>
-        Add
-      </Button>
+    <form className={formClass} onSubmit={submitWrapper}>
+      <Input
+        fullWidth
+        type="text"
+        value={value}
+        onChange={e => valueSetter(e.target.value)}
+        placeholder={hint}
+        endAdornment={
+          <InputAdornment position="end">
+            <IconButton>
+              <AddIcon />
+            </IconButton>
+          </InputAdornment>
+        }
+      />
     </form>
   )
 }

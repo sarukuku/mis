@@ -33,12 +33,13 @@ const Month = ({ reportId, month, setMonths }) => {
         successAction={() => deleteMonth(reportId, month.id)}
       />
 
-      <Typography component={'h2'}>
+      <Typography component={'h3'}>
         {month.name}
         <IconButton className={classes.deleteButton} aria-label="delete" onClick={() => setOpenDialog(true)}>
           <DeleteIcon fontSize={'inherit'} />
         </IconButton>
       </Typography>
+
       {month.topics.map(topic => (
         <Topic key={`${topic.name}-${month.id}`} topic={topic} />
       ))}

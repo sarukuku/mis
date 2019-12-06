@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Month from './month/month'
-import fetch from 'isomorphic-unfetch'
 
 const Report = ({ location }) => {
   const [months, setMonths] = useState([])
@@ -14,7 +13,9 @@ const Report = ({ location }) => {
       <h2>{location.reporter}</h2>
 
       <div className="months">
-        {months.map(month => <Month key={month.name} reportId={location.id} month={month} setMonths={setMonths} />)}
+        {months.map(month => (
+          <Month key={month.name} reportId={location.id} month={month} setMonths={setMonths} />
+        ))}
       </div>
     </div>
   )
