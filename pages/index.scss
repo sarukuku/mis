@@ -2,13 +2,12 @@ body {
   font-family: 'Roboto', sans-serif;
   margin: 0 auto;
   text-align: center;
-  background-color: #F7F8FA
+  background-color: #f6f6f6
 }
 
 .locations {
   display: flex;
   width: 100%;
-  outline: 1px solid red;
   overflow-x: auto;
 }
 
@@ -37,6 +36,7 @@ body {
 }
 
 .month {
+  z-index: -1;
   width: 40%;
   max-width: 430px;
 
