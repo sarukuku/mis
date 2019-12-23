@@ -21,12 +21,12 @@ const CheckBoxFilterHorizontal = ({elements, setElements, label}) => {
     return (
         <FormControl>
         <FormGroup row>
-                <FormControlLabel
+                {elements.length > 1 && <FormControlLabel
                     key={'filter-title-id'}
                     labelPlacement="end"
                     control={<Checkbox checked={all} color="default" onChange={toggleAll}/>}
                     label={'All'}
-                />
+                />}
                 {elements.map(el => (
                     <FormControlLabel
                         key={`filter-${el[label]}`}
