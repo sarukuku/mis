@@ -44,7 +44,7 @@ router.delete('/:id', (req, res, next) => {
 const checkMonths = async (report, nMonths) => {
   const { id, months } = report
   let windowDate = new Date()
-  windowDate.setMonth(-nMonths)
+  windowDate.setMonth(windowDate.getMonth() - nMonths)
 
   let indexMonthReport = 0
   let indexMonthWindow = 0
@@ -59,7 +59,7 @@ const checkMonths = async (report, nMonths) => {
     if (!!monthReport && windowDate.getMonth() === monthReport.date.getMonth()) {
       indexMonthReport++
     } else if (!monthReport || monthReport.date.getMonth() > windowDate.getMonth()) {
-      months.splice(indexMonthReport, 0, await createMonth(id, { name: getMonthName(windowDate.getMonth()), date: windowDate }))
+      months.splice(indexMonthReport, 0, await createMonth(id, { name: `${getMonthName(windowDate.getMonth())} ${windowDate.getFullYear()}`, date: windowDate }))
       indexMonthReport++
     }
 
