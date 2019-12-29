@@ -1,18 +1,18 @@
 import React from 'react'
 import Head from 'next/head'
-import {MuiThemeProvider} from "@material-ui/core"
+import { MuiThemeProvider } from '@material-ui/core'
 
 import './index.scss'
 
 import Dashboard from '../components/dashboard/dashboard'
-import {createMuiTheme} from "@material-ui/core/styles";
-import {grey} from "@material-ui/core/colors";
+import { createMuiTheme } from '@material-ui/core/styles'
+import { grey } from '@material-ui/core/colors'
 
 const theme = createMuiTheme({
-    palette: {
-        primary: { 500: "#ff5544" },
-        secondary: grey
-    }
+  palette: {
+    primary: { 500: '#ff5544' },
+    secondary: grey
+  }
 })
 
 const Home = () => {

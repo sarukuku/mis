@@ -74,11 +74,7 @@ const Topic = ({ topic }) => {
         </List>
       </CardContent>
       <CardActions disableSpacing>
-        <LabeledInput formClass={classes.addNote}
-                      value={newNote}
-                      valueSetter={setNewNote}
-                      submitHandler={createNote}
-                      hint="Add new note" />
+        <LabeledInput formClass={classes.addNote} value={newNote} valueSetter={setNewNote} submitHandler={createNote} hint="Add new note" />
       </CardActions>
     </Card>
   )
