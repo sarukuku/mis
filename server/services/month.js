@@ -19,9 +19,9 @@ const monthNames = [
 const getMonthName = month => monthNames[month]
 
 const addDefaultTopics = async month => {
-  const marketing = await new Topic({ name: 'Marketing' }).save()
-  const business = await new Topic({ name: 'Business' }).save()
-  const brand = await new Topic({ name: 'Brand' }).save()
+  const marketing = await new Topic({ name: 'Recruitment' }).save()
+  const business = await new Topic({ name: 'Sales' }).save()
+  const brand = await new Topic({ name: 'Brand & Culture' }).save()
   const internal = await new Topic({ name: 'Internal' }).save()
   month.topics = [marketing, business, brand, internal]
 }

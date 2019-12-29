@@ -55,15 +55,6 @@ if (!dev && cluster.isMaster) {
       })
     }
 
-    // Static files
-    // https://github.com/zeit/next.js/tree/4.2.3#user-content-static-file-serving-eg-images
-    server.use(
-      '/static',
-      express.static(path.join(__dirname, 'static'), {
-        maxAge: dev ? '0' : '365d'
-      })
-    )
-
     server.use(bodyParser.json())
     server.use(bodyParser.urlencoded({ extended: true }))
 

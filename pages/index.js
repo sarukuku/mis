@@ -20,7 +20,7 @@ const Home = () => {
     <>
       <Head>
         <title>MIS Tool</title>
-        <link rel="icon" href="/static/favicon.png" />
+        <link rel="icon" href="/favicon.png" />
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800" rel="stylesheet" />
         <meta name="robots" content="noindex,nofollow"></meta>
       </Head>
