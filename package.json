@@ -5,11 +5,11 @@
   "scripts": {
     "start": "NODE_ENV=production node ./server/index.js -p $PORT",
     "build": "next build",
-    "watch": "nodemon --exec npm run start -- ./server/index.js",
+    "watch": "nodemon ./server/index.js",
     "pretty": "prettier --write \"./**/*.{js,jsx,json}\""
   },
   "dependencies": {
-    "@material-ui/core": "^4.8.0",
+    "@material-ui/core": "^4.8.1",
     "@material-ui/icons": "^4.5.1",
     "@zeit/next-sass": "^1.0.1",
     "body-parser": "^1.19.0",
@@ -18,7 +18,7 @@
     "fs": "0.0.1-security",
     "isomorphic-unfetch": "^3.0.0",
     "mongodb": "^3.4.1",
-    "mongoose": "^5.8.2",
+    "mongoose": "^5.8.3",
     "next": "9.1.1",
     "node-sass": "^4.13.0",
     "nodemon": "^1.19.4",
