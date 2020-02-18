@@ -1,7 +1,9 @@
 
 var sendEvent = (responder, payload, type = "message") => {
-    responder.write(`event: ${type}\n`)
-    responder.write(`data: ${JSON.stringify(payload)}\n\n`)
+    if (responder.writable) {
+        responder.write(`event: ${type}\n`)
+        responder.write(`data: ${JSON.stringify(payload)}\n\n`)
+    }
 };
 
 var genId = () => {

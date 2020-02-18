@@ -56,6 +56,7 @@ if (!dev && cluster.isMaster) {
       })
     }
 
+    // Keep track of all connected clients
     var sseClients = []
     server.set('clients', sseClients)
 

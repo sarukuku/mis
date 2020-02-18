@@ -35,6 +35,7 @@ router.delete('/:topicId/:indexOfNote', async (req, res, next) => {
   topic.notes.splice(indexOfNote, 1)
   topic.save()
 
+  // send event to all connected clients
   req.app.get('clients').forEach(client => {
     let { id, responder } = client
     let data = {
