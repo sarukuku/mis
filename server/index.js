@@ -11,6 +11,7 @@ const mongoStore = require('connect-mongo')(session)
 const uid = require('uid-safe')
 
 const PORT = process.env.PORT || 3000
+const HOSTNAME = process.env.APP_HOSTNAME
 const dev = process.env.NODE_ENV !== 'production'
 const { reportRouter, monthRouter, topicRouter, authRouter } = require('./routes/index')
 const shouldAuthenticate = process.env.GOOGLE_AUTH_ENABLED
@@ -112,7 +113,7 @@ if (!dev && cluster.isMaster) {
       if (err) {
         throw err
       }
-      console.log(`ready at http://localhost:${PORT}`)
+      console.log(`ready at ${HOSTNAME}:${PORT}`)
     })
   })
 }
