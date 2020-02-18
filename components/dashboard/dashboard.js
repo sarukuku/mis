@@ -56,4 +56,19 @@ const Dashboard = () => {
   )
 }
 
+// SSE client
+if (typeof window !== 'undefined') {
+  const eventSource = new EventSource('/stream')
+
+  eventSource.addEventListener('open', () => {
+    console.log("Connection to stream opened")
+  })
+
+  eventSource.addEventListener('message', event => {
+    const data = JSON.parse(event.data)
+    console.log(data)
+  })
+}
+
+
 export default Dashboard
