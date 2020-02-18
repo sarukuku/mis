@@ -24,9 +24,8 @@ For the authentication to work you will have to setup OAuth 2.0 with Google. You
 - Add the origin uri to Authorized JavaScript origins e.g. `http://localhost:3000`, `https://mysuperapp.com`
 - Add the Authorized redirect URIs. Make sure it has the path `/auth/callback`. e.g. `http://localhost:3000/auth/callback`, `https://mysuperapp.com/auth/callback`
 
-3. Add the domain to Domain verification. (Not sure if this is necessary)
-4. You will get a client id and a secret.
+3. You will get a client id and a secret.
 
 Add the ID, secret to the .env file. Add the allowed domain in the env file also. This is original domain name of the Google account.
 
-Note that the app does not require authentication in development mode by default. You can change the shouldAuthenticate check in `server/index.js`.
+Note! To start the app with authentication, remember to set in the .env file GOOGLE_AUTH_ENABLED to true.

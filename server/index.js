@@ -13,7 +13,7 @@ const uid = require('uid-safe')
 const PORT = process.env.PORT || 3000
 const dev = process.env.NODE_ENV !== 'production'
 const { reportRouter, monthRouter, topicRouter, authRouter } = require('./routes/index')
-const shouldAuthenticate = !dev
+const shouldAuthenticate = process.env.GOOGLE_AUTH_ENABLED
 
 // Connect to the database.
 mongoose

@@ -1,7 +1,7 @@
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 
-const allowedDomain = process.env.AUTH_ALLOWED_DOMAIN
+const allowedDomain = process.env.GOOGLE_AUTH_ALLOWED_DOMAIN
 const clientID = process.env.GOOGLE_CLIENT_ID
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET
 const port = process.env.PORT
