@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 const { reportRouter, monthRouter, topicRouter } = require('./routes/index')
 const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
-const { sendEvent} = require('./utils/sse')
+const { sendEvent, genId } = require('./utils/sse')
 
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -61,7 +61,7 @@ if (!dev && cluster.isMaster) {
 
     // Server sent events
     server.get('/stream', (req, res, next) => {
-      let newId = Math.random().toString(36).substr(2, 7) + (+new Date()).toString(32).substr(4, 9)
+      let newId = genId()
       const client = {
         id: newId,
         responder: res
