@@ -8,7 +8,7 @@ const numCPUs = require('os').cpus().length
 const passport = require('passport')
 const session = require('express-session')
 const mongoStore = require('connect-mongo')(session)
-const uid = require('uid-safe')
+// const uid = require('uid-safe')
 
 const PORT = process.env.PORT || 3000
 const HOSTNAME = process.env.APP_HOSTNAME
@@ -77,8 +77,7 @@ if (!dev && cluster.isMaster) {
           secret: 'mysupersikritsecret',
           cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 30, // month
-            secure: !dev,
-            httpOnly: dev
+            secure: !dev
           },
           resave: true,
           saveUninitialized: true,
