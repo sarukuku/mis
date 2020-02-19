@@ -79,8 +79,8 @@ if (!dev && cluster.isMaster) {
             maxAge: 1000 * 60 * 60 * 24 * 30, // month
             secure: !dev
           },
-          resave: false,
-          saveUninitialized: false,
+          resave: true,
+          saveUninitialized: true,
           store: new mongoStore({ mongooseConnection: mongoose.connection })
         })
       )
@@ -91,7 +91,7 @@ if (!dev && cluster.isMaster) {
       // Check if the request has a user before allowing further.
       server.use((req, res, next) => {
         console.log('isAuthenticated?', req.isAuthenticated())
-        console.log('req.sess:', req.session.passport.user)
+        console.log('req.sess:', req.session)
         if (req.isAuthenticated()) {
           next()
         } else {
