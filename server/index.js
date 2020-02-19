@@ -74,7 +74,7 @@ if (!dev && cluster.isMaster) {
     if (shouldAuthenticate) {
       server.use(
         session({
-          secret: uid.sync(18),
+          secret: 'mysupersikritsecret',
           cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 30, // month
             secure: !dev,
