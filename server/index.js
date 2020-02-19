@@ -77,7 +77,8 @@ if (!dev && cluster.isMaster) {
           secret: uid.sync(18),
           cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 30, // month
-            secure: !dev
+            secure: !dev,
+            httpOnly: !dev
           },
           resave: true,
           saveUninitialized: true,
