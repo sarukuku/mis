@@ -17,8 +17,6 @@ passport.use(
       callbackURL: `${hostname}/auth/callback`
     },
     (accessToken, refreshToken, profile, callback) => {
-      console.log('profile:', profile)
-      console.log('allowedDomain:', allowedDomain)
       // Logic to check if it's really a reaktor user
       if (profile._json.hd !== allowedDomain) {
         return callback(null, false, { message: 'Authentitcation failed' })
