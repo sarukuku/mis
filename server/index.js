@@ -91,10 +91,11 @@ if (!dev && cluster.isMaster) {
       // Check if the request has a user before allowing further.
       server.use((req, res, next) => {
         console.log('isAuthenticated?', req.isAuthenticated())
-        if (!req.isAuthenticated()) {
-          res.redirect('/auth')
-        } else {
+        console.log('req.sess:', req.session.passport.user)
+        if (req.isAuthenticated()) {
           next()
+        } else {
+          res.redirect('/auth')
         }
       })
     }
