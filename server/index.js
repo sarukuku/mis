@@ -63,6 +63,7 @@ if (!dev && cluster.isMaster) {
           })
           return next()
         }
+        console.log('redirect to:', req.headers.host, req.url)
         res.redirect('https://' + req.headers.host + req.url)
       })
     }
@@ -78,7 +79,7 @@ if (!dev && cluster.isMaster) {
             maxAge: 1000 * 60 * 60 * 24 * 30, // month
             secure: !dev
           },
-          resave: true,
+          resave: false,
           saveUninitialized: false,
           store: new mongoStore({ mongooseConnection: mongoose.connection })
         })
@@ -89,6 +90,7 @@ if (!dev && cluster.isMaster) {
 
       // Check if the request has a user before allowing further.
       server.use((req, res, next) => {
+        console.log('isAuthenticated?', req.isAuthenticated())
         if (!req.isAuthenticated()) {
           res.redirect('/auth')
         } else {
