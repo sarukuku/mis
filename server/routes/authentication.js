@@ -13,7 +13,11 @@ const destroySession = (req, res) => {
 router.get('/', passport.authenticate('google', { scope: ['email'], prompt: 'select_account' }))
 
 // Callback after login is done at Google's end.
-router.get('/callback', passport.authenticate('google', { failureRedirect: '/auth' }), (req, res) => res.redirect('/'))
+router.get('/callback', passport.authenticate('google', { failureRedirect: '/auth' }), (req, res) =>
+  req.session.save(() => {
+    res.redirect('/')
+  })
+)
 
 // Logout.
 router.get('/logout', destroySession)
