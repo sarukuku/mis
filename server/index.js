@@ -6,9 +6,7 @@ const bodyParser = require('body-parser')
 const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
 const passport = require('passport')
-const session = require('express-session')
-const mongoStore = require('connect-mongo')(session)
-// const uid = require('uid-safe')
+const session = require('cookie-session')
 
 const PORT = process.env.PORT || 3000
 const HOSTNAME = process.env.APP_HOSTNAME
@@ -63,7 +61,6 @@ if (!dev && cluster.isMaster) {
           })
           return next()
         }
-        console.log('redirect to:', req.headers.host, req.url)
         res.redirect('https://' + req.headers.host + req.url)
       })
     }
@@ -74,14 +71,11 @@ if (!dev && cluster.isMaster) {
     if (shouldAuthenticate) {
       server.use(
         session({
-          secret: 'mysupersikritsecret',
+          secret: process.env.GOOGLE_AUTH_COOKIE_SECRET,
           cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 30, // month
             secure: !dev
-          },
-          resave: true,
-          saveUninitialized: true,
-          store: new mongoStore({ mongooseConnection: mongoose.connection })
+          }
         })
       )
       server.use(passport.initialize())
@@ -90,8 +84,6 @@ if (!dev && cluster.isMaster) {
 
       // Check if the request has a user before allowing further.
       server.use((req, res, next) => {
-        console.log('isAuthenticated?', req.isAuthenticated())
-        console.log('req.sess:', req.session)
         if (req.isAuthenticated()) {
           next()
         } else {

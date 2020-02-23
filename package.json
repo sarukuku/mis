@@ -13,10 +13,9 @@
     "@material-ui/icons": "^4.5.1",
     "@zeit/next-sass": "^1.0.1",
     "body-parser": "^1.19.0",
-    "connect-mongo": "^3.2.0",
+    "cookie-session": "^1.4.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-session": "^1.17.0",
     "fs": "0.0.1-security",
     "isomorphic-unfetch": "^3.0.0",
     "mongodb": "^3.4.1",
@@ -28,8 +27,7 @@
     "passport-google-oauth20": "^2.0.0",
     "prettier": "^1.19.1",
     "react": "16.11.0",
-    "react-dom": "16.11.0",
-    "uid-safe": "^2.1.5"
+    "react-dom": "16.11.0"
   },
   "engines": {
     "node": "10.x"
