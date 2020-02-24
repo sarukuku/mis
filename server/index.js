@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
+const { sendEvent, genId } = require('./utils/sse')
 const passport = require('passport')
 const session = require('cookie-session')
 
@@ -91,6 +92,36 @@ if (!dev && cluster.isMaster) {
         }
       })
     }
+
+    // Keep track of all connected clients
+    var sseClients = []
+    server.set('clients', sseClients)
+
+    // Server sent events
+    server.get('/stream', (req, res, next) => {
+      let newId = genId()
+      const client = {
+        id: newId,
+        responder: res
+      }
+      server.get('clients').push(client)
+      console.log(`${newId} client connected`)
+
+      const headers = {
+        'Content-Type': 'text/event-stream',
+        'Connection': 'keep-alive',
+        'Cache-Control': 'no-cache'
+      }
+      res.writeHead(200, headers)
+
+      sendEvent(res, { handshake: true })
+
+      req.on('close', () => {
+        console.log(`${newId} client dropped`)
+        server.set('clients', server.get('clients').filter(c => c.id !== newId))
+        res.end()
+      })
+    })
 
     server.use('/api/report', reportRouter)
     server.use('/api/month', monthRouter)
