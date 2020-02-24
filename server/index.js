@@ -1,16 +1,21 @@
 require('dotenv').config()
 const express = require('express')
 const next = require('next')
-const path = require('path')
-const bodyParser = require('body-parser')
-const PORT = process.env.PORT || 3000
-const dev = process.env.NODE_ENV !== 'production'
 const mongoose = require('mongoose')
-const { reportRouter, monthRouter, topicRouter } = require('./routes/index')
+const bodyParser = require('body-parser')
 const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
 const { sendEvent, genId } = require('./utils/sse')
+const passport = require('passport')
+const session = require('cookie-session')
 
+const PORT = process.env.PORT || 3000
+const HOSTNAME = process.env.APP_HOSTNAME
+const dev = process.env.NODE_ENV !== 'production'
+const { reportRouter, monthRouter, topicRouter, authRouter } = require('./routes/index')
+const shouldAuthenticate = process.env.GOOGLE_AUTH_ENABLED
+
+// Connect to the database.
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -22,6 +27,11 @@ mongoose
   .catch(error => {
     console.log('error connecting to MongoDB:', error.message)
   })
+
+// Configure authentication strategy for Passport.
+if (shouldAuthenticate) {
+  require('./services/passport')
+}
 
 // Multi-process to utilize all CPU cores.
 if (!dev && cluster.isMaster) {
@@ -89,9 +99,37 @@ if (!dev && cluster.isMaster) {
     server.use(bodyParser.json())
     server.use(bodyParser.urlencoded({ extended: true }))
 
+    if (shouldAuthenticate) {
+      server.use(
+        session({
+          secret: process.env.GOOGLE_AUTH_COOKIE_SECRET,
+          cookie: {
+            maxAge: 1000 * 60 * 60 * 24 * 30, // month
+            secure: !dev
+          }
+        })
+      )
+      server.use(passport.initialize())
+      server.use(passport.session())
+      server.use('/auth', authRouter)
+
+      // Check if the request has a user before allowing further.
+      server.use((req, res, next) => {
+        if (req.isAuthenticated()) {
+          next()
+        } else {
+          res.redirect('/auth')
+        }
+      })
+    }
+
     server.use('/api/report', reportRouter)
     server.use('/api/month', monthRouter)
     server.use('/api/topic', topicRouter)
+
+    server.get('/', (req, res) => {
+      return handle(req, res)
+    })
 
     server.get('*', (req, res) => {
       return handle(req, res) // react stuff
@@ -101,7 +139,7 @@ if (!dev && cluster.isMaster) {
       if (err) {
         throw err
       }
-      console.log(`ready at http://localhost:${PORT}`)
+      console.log(`ready at ${HOSTNAME}:${PORT}`)
     })
   })
 }
