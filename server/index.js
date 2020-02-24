@@ -66,6 +66,33 @@ if (!dev && cluster.isMaster) {
       })
     }
 
+    server.use(bodyParser.json())
+    server.use(bodyParser.urlencoded({ extended: true }))
+
+    if (shouldAuthenticate) {
+      server.use(
+        session({
+          secret: process.env.GOOGLE_AUTH_COOKIE_SECRET,
+          cookie: {
+            maxAge: 1000 * 60 * 60 * 24 * 30, // month
+            secure: !dev
+          }
+        })
+      )
+      server.use(passport.initialize())
+      server.use(passport.session())
+      server.use('/auth', authRouter)
+
+      // Check if the request has a user before allowing further.
+      server.use((req, res, next) => {
+        if (req.isAuthenticated()) {
+          next()
+        } else {
+          res.redirect('/auth')
+        }
+      })
+    }
+
     // Keep track of all connected clients
     var sseClients = []
     server.set('clients', sseClients)
@@ -95,33 +122,6 @@ if (!dev && cluster.isMaster) {
         res.end()
       })
     })
-
-    server.use(bodyParser.json())
-    server.use(bodyParser.urlencoded({ extended: true }))
-
-    if (shouldAuthenticate) {
-      server.use(
-        session({
-          secret: process.env.GOOGLE_AUTH_COOKIE_SECRET,
-          cookie: {
-            maxAge: 1000 * 60 * 60 * 24 * 30, // month
-            secure: !dev
-          }
-        })
-      )
-      server.use(passport.initialize())
-      server.use(passport.session())
-      server.use('/auth', authRouter)
-
-      // Check if the request has a user before allowing further.
-      server.use((req, res, next) => {
-        if (req.isAuthenticated()) {
-          next()
-        } else {
-          res.redirect('/auth')
-        }
-      })
-    }
 
     server.use('/api/report', reportRouter)
     server.use('/api/month', monthRouter)
