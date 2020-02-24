@@ -112,14 +112,15 @@ if (!dev && cluster.isMaster) {
         'Connection': 'keep-alive',
         'Cache-Control': 'no-cache'
       }
+
       res.writeHead(200, headers)
 
       sendEvent(res, { handshake: true })
 
       req.on('close', () => {
-        console.log(`${newId} client dropped`)
+        console.log(`${newId} client dropped clients remaining:`)
+        server.get('clients').forEach(({id}) => console.log(id))
         server.set('clients', server.get('clients').filter(c => c.id !== newId))
-        res.end()
       })
     })
 

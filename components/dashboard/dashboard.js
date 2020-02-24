@@ -34,6 +34,11 @@ const Dashboard = () => {
       const data = JSON.parse(event.data)
       console.log(data)
     })
+
+    eventSource.addEventListener('error', () => {
+      eventSource.close()
+      console.log("event stream closed")
+    })
   }, [])
 
   const addReporter = async () => {
