@@ -23,7 +23,7 @@ const Dashboard = () => {
   }
 
   const updateReports = (eventData, reports) => {
-    if(eventData.length !== 0) {
+    if(eventData.length !== 0 && reports.length !== 0) {
       const data = JSON.parse(eventData)
       // The message contains the data to update the reports with.
       // Index the data via reporter->month->topic
@@ -100,7 +100,7 @@ const Dashboard = () => {
         {updateReports(eventData, reports)
           .filter(r => !r.hidden)
           .map(r => (
-            <Report key={r.reporter} location={r} />
+            <Report key={r.reporter} location={r} months={r.months}/>
           ))}
       </div>
     </>
