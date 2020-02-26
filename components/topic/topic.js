@@ -9,11 +9,13 @@ import Typography from '@material-ui/core/Typography'
 import DeleteIcon from '@material-ui/icons/Delete'
 import useStyles from './styles'
 
-const Topic = ({ topic }) => {
+const Topic = ({ topic, month_id, reporter_id }) => {
   const classes = useStyles()
 
   const { name } = topic
 
+  const [reporter, setReporter] = useState(reporter_id)
+  const [month, setMonth] = useState(month_id)
   const [notes, setNotes] = useState(topic.notes || [])
   const [newNote, setNewNote] = useState('')
 
@@ -23,7 +25,7 @@ const Topic = ({ topic }) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ text: newNote })
+      body: JSON.stringify({ text: newNote, month: month, reporter: reporter })
     }).then(n => n.json())
 
     setNotes([...notes])
@@ -35,7 +37,8 @@ const Topic = ({ topic }) => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({month: month, reporter: reporter })
     }).then(n => n.json())
 
     setNotes([...notes])

@@ -3,6 +3,8 @@ const schema = mongoose.Schema
 
 const topicSchema = new schema({
   name: { type: String },
+  month: { type: String },
+  reporter: { type: String },
   notes: { type: Array, default: [] }
 })
 

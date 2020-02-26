@@ -119,8 +119,9 @@ if (!dev && cluster.isMaster) {
 
       req.on('close', () => {
         console.log(`${newId} client dropped clients remaining:`)
-        server.get('clients').forEach(({id}) => console.log(id))
         server.set('clients', server.get('clients').filter(c => c.id !== newId))
+        server.get('clients').forEach(({id}) => console.log(id))
+        // res.end()
       })
     })
 

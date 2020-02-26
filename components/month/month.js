@@ -41,7 +41,7 @@ const Month = ({ reportId, month, setMonths }) => {
       </Typography>
 
       {month.topics.map(topic => (
-        <Topic key={`${topic.name}-${month.id}`} topic={topic} />
+        <Topic key={`${topic.name}-${month.id}`} topic={topic} month_id={`${month.id}`} reporter_id={`${reportId}`} />
       ))}
     </div>
   )

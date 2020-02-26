@@ -8,7 +8,7 @@ const { createMonth } = require('../services/month')
 router.post('/topic/:reportId/:monthId', async (req, res, next) => {
   const reportId = req.params.reportId
   const monthId = req.params.monthId
-  const newTopic = new Topic(req.body)
+  const newTopic = new Topic(req.body, monthId, reportId)
   await newTopic.save()
   Month.update({ _id: monthId }, { $push: { topics: newTopic } })
     .then(console.log)
