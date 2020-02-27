@@ -32,7 +32,7 @@ const Topic = ({ topic, notes }) => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
-      },
+      }
     }).then(n => n.json())
   }
 

@@ -118,10 +118,10 @@ if (!dev && cluster.isMaster) {
       sendEvent(res, { handshake: true })
 
       req.on('close', () => {
-        console.log(`${newId} client dropped clients remaining:`)
+        console.log(`Client dropped: ${newId}\nClients remaining:`)
         server.set('clients', server.get('clients').filter(c => c.id !== newId))
         server.get('clients').forEach(({id}) => console.log(id))
-        // res.end()
+        res.end()
       })
     })
 
