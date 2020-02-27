@@ -4,8 +4,37 @@ import fetch from 'isomorphic-unfetch'
 import './style.scss'
 import Navbar from '../navbar/navbar'
 
-// TODO add this to the filter
 const nMonths = 3
+
+// We search the reports json tree for the id we need to change
+// this assumes a tree format of [node {id:
+//                                     ...
+//                                     [node, node, ...]},
+//                                node { ... },
+//                                ...]
+function findAndReplaceInReports(array_of_nodes, id, payload) {
+  if (!Array.isArray(array_of_nodes)) return false
+
+  Object.values(array_of_nodes).forEach(function(o) {
+    // Find array in each object
+    let array_key
+    for (let k in o) {
+      if (o.hasOwnProperty(k) && Array.isArray(o[k])) {
+        array_key = k
+        break
+      }
+    }
+    // Have we found the id?
+    if (o.hasOwnProperty('id')) {
+      if (o.id === id) {
+        o[array_key] = payload
+        return true
+      }
+    }
+    if (findAndReplaceInReports(o[array_key], id, payload)) return true
+  })
+  return false
+}
 
 const Dashboard = () => {
   const [eventData, setEventData] = useState('')
@@ -22,28 +51,10 @@ const Dashboard = () => {
     }).then(res => res.json())
   }
 
-  const updateReports = (eventData, reports) => {
+  const updatedReports = (eventData, reports) => {
     if(eventData.length !== 0 && reports.length !== 0) {
       const data = JSON.parse(eventData)
-      // The message contains the data to update the reports with.
-      // Index the data via reporter->month->topic
-      // The type lets you know how deep in the tree you need to go ie a month type will not have a topic ID
-      switch (data.type) {
-        case 'topic':
-          if (reports.length !== 0) {
-            let r_index = reports.findIndex(x => x.id === data.reporter)
-            let months = reports[r_index].months
-            let m_index = months.findIndex(x => x.id === data.month)
-            let top = months[m_index].topics
-            let t_index = top.findIndex(x => x.id === data.topic)
-            reports[r_index].months[m_index].topics[t_index].notes = data.payload
-            console.log(reports[r_index].months[m_index].topics[t_index].notes)
-          }
-          break;
-        case 'month':
-          break;
-        default:
-      }
+      if(findAndReplaceInReports(reports, data.id, data.payload)) { console.log("Reports updated") }
     }
     return reports
   }
@@ -90,14 +101,14 @@ const Dashboard = () => {
   return (
     <>
       <Navbar
-        reports={updateReports(eventData, reports)}
+        reports={updatedReports(eventData, reports)}
         setReports={setReports}
         newReporter={newReporter}
         setNewReporter={setNewReporter}
         addReporter={addReporter}
       />
       <div className="locations">
-        {updateReports(eventData, reports)
+        {updatedReports(eventData, reports)
           .filter(r => !r.hidden)
           .map(r => (
             <Report key={r.reporter} location={r} months={r.months}/>

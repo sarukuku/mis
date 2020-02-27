@@ -10,16 +10,13 @@ var genId = () => {
     return Math.random().toString(36).substr(2, 7) + (+new Date()).toString(32).substr(4, 9)
 };
 
-var updateClients = (req, payload, type, topic, month, reporter) => {
+var updateClients = (req, payload, id, key) => {
     req.app.get('clients').forEach(client => {
         let { _, responder } = client
-
         let data = {
-            type: type,
             payload: payload,
-            topic: topic,
-            month: month,
-            reporter: reporter
+            id: id,
+            // key: key,
         }
 
         sendEvent(responder, data)

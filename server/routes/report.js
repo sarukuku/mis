@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Report = require('../models/report')
+const { updateClients } = require('../utils/sse')
 const { createMonth, getMonthName } = require('../services/month')
 
 router.post('/', async (req, res, next) => {
@@ -23,7 +24,6 @@ router.get('/', async (req, res) => {
   for (let report of reports) {
     await checkMonths(report, nMonths)
   }
-
   res.json(reports)
 })
 

@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Topic = require('../models/topic')
-const { sendEvent, updateClients } = require('../utils/sse')
+const { updateClients } = require('../utils/sse')
 
 router.post('/:topicId', async (req, res, next) => {
   const topicId = req.params.topicId
@@ -11,7 +11,7 @@ router.post('/:topicId', async (req, res, next) => {
   topic.notes.push(text)
   await topic.save()
 
-  updateClients(req, topic.notes, 'topic', topicId, month, reporter)
+  updateClients(req, topic.notes, topicId)
 
   res.status(200).json(topic.notes)
 })
@@ -26,7 +26,7 @@ router.delete('/:topicId/:indexOfNote', async (req, res, next) => {
   topic.notes.splice(indexOfNote, 1)
   topic.save()
 
-  updateClients(req, topic.notes, 'topic', topicId, month, reporter)
+  updateClients(req, topic.notes, topicId)
 
   res.status(200).json(topic.notes)
 })
