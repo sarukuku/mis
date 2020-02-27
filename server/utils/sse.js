@@ -16,9 +16,7 @@ var updateClients = (req, payload, id, key) => {
         let data = {
             payload: payload,
             id: id,
-            // key: key,
         }
-
         sendEvent(responder, data)
     })
 };
