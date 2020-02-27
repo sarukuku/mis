@@ -5,9 +5,8 @@ const Report = ({ location, months }) => {
   return (
     <div className="location">
       <h2>{location.reporter}</h2>
-
       <div className="months">
-        {months.reverse().map(month => (
+        {months.map(month => (
           <Month key={month.name} reportId={location.id} month={month}  />
         ))}
       </div>

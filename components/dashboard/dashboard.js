@@ -16,7 +16,7 @@ function findAndReplaceInReports(array_of_nodes, id, payload) {
   if (!Array.isArray(array_of_nodes)) return false
 
   Object.values(array_of_nodes).forEach(function(o) {
-    // Find array in each object
+    // Each node object contains one array with it's data contained
     let array_key
     for (let k in o) {
       if (o.hasOwnProperty(k) && Array.isArray(o[k])) {
@@ -24,13 +24,14 @@ function findAndReplaceInReports(array_of_nodes, id, payload) {
         break
       }
     }
-    // Have we found the id?
+    // Is this the node we want to replace?
     if (o.hasOwnProperty('id')) {
       if (o.id === id) {
         o[array_key] = payload
         return true
       }
     }
+    // Recurse into the nodes data array
     if (findAndReplaceInReports(o[array_key], id, payload)) return true
   })
   return false
@@ -62,7 +63,8 @@ const Dashboard = () => {
   useEffect(() => {
     fetchReporters().then(setReports)
 
-    if (typeof (EventSource) !== "undefined" && eventSource === undefined) {
+    // Set up server side event handling
+    if (typeof (EventSource) !== 'undefined' && eventSource === undefined) {
       eventSource = new EventSource('/stream')
 
       eventSource.addEventListener('open', () => {
@@ -71,11 +73,11 @@ const Dashboard = () => {
 
       eventSource.addEventListener('error', () => {
         eventSource.close()
-        console.log("event stream closed")
+        console.log("Event stream closed")
       })
 
       eventSource.addEventListener('message', (event) => {
-        console.log('message received')
+        console.log("Message received: " + event.data)
         setEventData(event.data)
       })
     }
