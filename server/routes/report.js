@@ -2,23 +2,28 @@ const express = require('express')
 const router = express.Router()
 const Report = require('../models/report')
 const { createMonth, getMonthName } = require('../services/month')
+const { updateClients } = require('../utils/sse')
 
-router.post('/', async (req, res, next) => {
-  const report = new Report(req.body)
-  const result = await report.save()
-  res.status(200).json(result)
-})
-
-router.get('/', async (req, res) => {
-  const { nMonths } = req.query
-
-  const reports = await Report.find({}).populate({
+async function getAllReports() {
+  return await Report.find({}).populate({
     path: 'months',
     populate: {
       path: 'topics',
       model: 'Topic'
     }
   })
+}
+
+router.post('/', async (req, res, next) => {
+  const report = new Report(req.body)
+  const result = await report.save()
+  updateClients(req, await getAllReports(), '')
+  res.status(200).json(result)
+})
+
+router.get('/', async (req, res) => {
+  const { nMonths } = req.query
+  const reports = await getAllReports()
 
   for (let report of reports) {
     await checkMonths(report, nMonths)

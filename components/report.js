@@ -7,7 +7,7 @@ const Report = ({ location, months }) => {
       <h2>{location.reporter}</h2>
       <div className="months">
         {months.map(month => (
-          <Month key={month.name} reportId={location.id} month={month}  />
+          <Month key={month.name} reportId={location.id} month={month} />
         ))}
       </div>
     </div>

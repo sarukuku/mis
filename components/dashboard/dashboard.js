@@ -53,9 +53,15 @@ const Dashboard = () => {
   }
 
   const updatedReports = (eventData, reports) => {
-    if(eventData.length !== 0 && reports.length !== 0) {
+    if (eventData.length !== 0 && reports.length !== 0) {
       const data = JSON.parse(eventData)
-      if(findAndReplaceInReports(reports, data.id, data.payload)) { console.log("Reports updated") }
+      if (data.id === '') {
+        // If the id is '' we are updating all the reports
+        reports = data.payload
+      } else {
+        findAndReplaceInReports(reports, data.id, data.payload)
+      }
+      console.log('Reports updated')
     }
     return reports
   }
@@ -64,26 +70,27 @@ const Dashboard = () => {
     fetchReporters().then(setReports)
 
     // Set up server side event handling
-    if (typeof (EventSource) !== 'undefined' && eventSource === undefined) {
+    if (typeof EventSource !== 'undefined' && eventSource === undefined) {
       eventSource = new EventSource('/stream')
 
       eventSource.addEventListener('open', () => {
-        console.log("Connection to stream opened")
+        console.log('Connection to stream opened')
       })
 
       eventSource.addEventListener('error', () => {
         eventSource.close()
-        console.log("Event stream closed")
+        console.log('Event stream closed')
       })
 
-      eventSource.addEventListener('message', (event) => {
-        console.log("Message received: " + event.data)
-        setEventData(event.data)
+      eventSource.addEventListener('message', message_event => {
+        console.log('Message received: ' + message_event.data)
+        setEventData(message_event.data)
       })
     }
 
     return () => {
       eventSource.close()
+      // eventSource.removeEventListener('closed')
       setEventData('')
     }
   }, [])
@@ -97,23 +104,24 @@ const Dashboard = () => {
       body: JSON.stringify({ reporter: newReporter })
     })
     setNewReporter('')
-    fetchReporters().then(setReports)
   }
+
+  const latest_reports = updatedReports(eventData, reports)
 
   return (
     <>
       <Navbar
-        reports={updatedReports(eventData, reports)}
+        reports={latest_reports}
         setReports={setReports}
         newReporter={newReporter}
         setNewReporter={setNewReporter}
         addReporter={addReporter}
       />
       <div className="locations">
-        {updatedReports(eventData, reports)
+        {latest_reports
           .filter(r => !r.hidden)
           .map(r => (
-            <Report key={r.reporter} location={r} months={r.months}/>
+            <Report key={r.reporter} location={r} months={r.months} />
           ))}
       </div>
     </>

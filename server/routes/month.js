@@ -22,6 +22,7 @@ router.post('/topic/:reportId/:monthId', async (req, res, next) => {
       model: 'Topic'
     }
   })
+
   updateClients(req, report.months, reportId)
   res.status(200).json(report.months)
 })
