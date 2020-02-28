@@ -22,14 +22,14 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchReporters().then(setReports)
-    
+
     // SSE client
     const eventSource = new EventSource('/stream')
 
     eventSource.addEventListener('open', () => {
-      console.log("Connection to stream opened")
+      console.log('Connection to stream opened')
     })
-  
+
     eventSource.addEventListener('message', event => {
       const data = JSON.parse(event.data)
       console.log(data)
