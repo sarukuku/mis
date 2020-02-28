@@ -3,10 +3,8 @@ const router = express.Router()
 const passport = require('passport')
 
 const destroySession = (req, res) => {
-  req.session.destroy(() => {
-    req.logout()
-    res.redirect('/auth')
-  })
+  req.logout()
+  res.redirect('/auth')
 }
 
 // Login.
