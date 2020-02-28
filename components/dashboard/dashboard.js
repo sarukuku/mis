@@ -66,6 +66,10 @@ const Dashboard = () => {
     return reports
   }
 
+  let eventOpenL
+  let eventMessageL
+  let eventErrorL
+
   useEffect(() => {
     fetchReporters().then(setReports)
 
@@ -73,25 +77,29 @@ const Dashboard = () => {
     if (typeof EventSource !== 'undefined' && eventSource === undefined) {
       eventSource = new EventSource('/stream')
 
-      eventSource.addEventListener('open', () => {
+      eventSource.addEventListener('open', eventOpenL => {
         console.log('Connection to stream opened')
       })
 
-      eventSource.addEventListener('error', () => {
+      eventSource.addEventListener('error', eventErrorL => {
         eventSource.close()
         console.log('Event stream closed')
       })
 
-      eventSource.addEventListener('message', message_event => {
-        console.log('Message received: ' + message_event.data)
-        setEventData(message_event.data)
+      eventSource.addEventListener('message', eventMessageL => {
+        console.log('Message received: ' + eventMessageL.data)
+        setEventData(eventMessageL.data)
       })
     }
 
     return () => {
-      eventSource.close()
-      // eventSource.removeEventListener('closed')
-      setEventData('')
+      if (eventSource !== undefined) {
+        eventSource.close()
+        eventSource.removeEventListener('open', eventOpenL)
+        eventSource.removeEventListener('message', eventMessageL)
+        eventSource.removeEventListener('error', eventErrorL)
+        setEventData('')
+      }
     }
   }, [])
 
