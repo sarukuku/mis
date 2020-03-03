@@ -87,7 +87,7 @@ const Dashboard = () => {
       })
 
       eventSource.addEventListener('message', eventMessageL => {
-        console.log('Message received: ' + eventMessageL.data)
+        console.log('Message received:')
         setEventData(eventMessageL.data)
       })
     }
