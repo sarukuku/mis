@@ -9,12 +9,10 @@ import Typography from '@material-ui/core/Typography'
 import DeleteIcon from '@material-ui/icons/Delete'
 import useStyles from './styles'
 
-const Topic = ({ topic }) => {
+const Topic = ({ topic, notes }) => {
   const classes = useStyles()
-
   const { name } = topic
 
-  const [notes, setNotes] = useState(topic.notes || [])
   const [newNote, setNewNote] = useState('')
 
   const createNote = async () => {
@@ -26,7 +24,6 @@ const Topic = ({ topic }) => {
       body: JSON.stringify({ text: newNote })
     }).then(n => n.json())
 
-    setNotes([...notes])
     setNewNote('')
   }
 
@@ -37,8 +34,6 @@ const Topic = ({ topic }) => {
         'Content-Type': 'application/json'
       }
     }).then(n => n.json())
-
-    setNotes([...notes])
   }
 
   const allNotes =

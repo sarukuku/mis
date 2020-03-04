@@ -4,6 +4,7 @@ const Report = require('../models/report')
 const Month = require('../models/month')
 const Topic = require('../models/topic')
 const { createMonth } = require('../services/month')
+const { updateClients } = require('../utils/sse')
 
 router.post('/topic/:reportId/:monthId', async (req, res, next) => {
   const reportId = req.params.reportId
@@ -21,6 +22,8 @@ router.post('/topic/:reportId/:monthId', async (req, res, next) => {
       model: 'Topic'
     }
   })
+
+  updateClients(req, report.months, reportId)
   res.status(200).json(report.months)
 })
 
@@ -38,13 +41,13 @@ router.post('/:reportId', async (req, res, next) => {
     }
   })
 
+  updateClients(req, report.months, reportId)
   res.status(200).json(report.months)
 })
 
 router.delete('/:reportId/:monthId', async (req, res, next) => {
   const reportId = req.params.reportId
   const monthId = req.params.monthId
-
   const month = await Month.findOne({ _id: monthId })
 
   // TODO maybe we should return a not found message
@@ -62,6 +65,7 @@ router.delete('/:reportId/:monthId', async (req, res, next) => {
     }
   })
 
+  updateClients(req, report.months, reportId)
   res.status(200).json(report.months)
 })
 

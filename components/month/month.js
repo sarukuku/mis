@@ -7,7 +7,7 @@ import DeleteDialog from '../delete/DeleteDialog'
 
 import useStyles from './styles'
 
-const Month = ({ reportId, month, setMonths }) => {
+const Month = ({ reportId, month }) => {
   const classes = useStyles()
 
   const [openDialog, setOpenDialog] = useState(false)
@@ -19,8 +19,6 @@ const Month = ({ reportId, month, setMonths }) => {
         'Content-Type': 'application/json'
       }
     }).then(m => m.json())
-
-    setMonths([...months])
   }
 
   return (
@@ -41,7 +39,7 @@ const Month = ({ reportId, month, setMonths }) => {
       </Typography>
 
       {month.topics.map(topic => (
-        <Topic key={`${topic.name}-${month.id}`} topic={topic} />
+        <Topic key={`${topic.name}-${month.id}`} topic={topic} notes={topic.notes} />
       ))}
     </div>
   )

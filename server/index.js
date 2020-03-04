@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
-const { sendEvent, genId } = require('./utils/sse')
+const { genId } = require('./utils/sse')
 const passport = require('passport')
 const session = require('cookie-session')
 
@@ -109,16 +109,19 @@ if (!dev && cluster.isMaster) {
 
       const headers = {
         'Content-Type': 'text/event-stream',
-        'Connection': 'keep-alive',
+        Connection: 'keep-alive',
         'Cache-Control': 'no-cache'
       }
+
       res.writeHead(200, headers)
 
-      sendEvent(res, { handshake: true })
-
       req.on('close', () => {
-        console.log(`${newId} client dropped`)
-        server.set('clients', server.get('clients').filter(c => c.id !== newId))
+        console.log(`Client dropped: ${newId}\nClients remaining: `)
+        server.set(
+          'clients',
+          server.get('clients').filter(c => c.id !== newId)
+        )
+        console.log(server.get('clients').length)
         res.end()
       })
     })

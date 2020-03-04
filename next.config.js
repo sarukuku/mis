@@ -1,6 +1,5 @@
 const webpack = require('webpack')
 const withSass = require('@zeit/next-sass')
-const withCSS = require('@zeit/next-css')
 
 require('dotenv').config()
 
