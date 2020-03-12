@@ -3,8 +3,6 @@ const express = require('express')
 const next = require('next')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const cluster = require('cluster')
-const numCPUs = require('os').cpus().length
 const { genId } = require('./utils/sse')
 const passport = require('passport')
 const session = require('cookie-session')
@@ -33,116 +31,102 @@ if (shouldAuthenticate) {
   require('./services/passport')
 }
 
-// Multi-process to utilize all CPU cores.
-if (!dev && cluster.isMaster) {
-  console.log(`Node cluster master ${process.pid} is running`)
+const nextApp = next({ dir: '.', dev })
+const handle = nextApp.getRequestHandler()
 
-  // Fork workers.
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork()
+nextApp.prepare().then(() => {
+  const server = express()
+
+  if (!dev) {
+    // Enforce SSL & HSTS in production
+    server.use(function(req, res, next) {
+      var proto = req.headers['x-forwarded-proto']
+      if (proto === 'https') {
+        res.set({
+          'Strict-Transport-Security': 'max-age=31557600' // one-year
+        })
+        return next()
+      }
+      res.redirect('https://' + req.headers.host + req.url)
+    })
   }
 
-  cluster.on('exit', (worker, code, signal) => {
-    console.error(`Node cluster worker ${worker.process.pid} exited: code ${code}, signal ${signal}`)
-  })
-} else {
-  const nextApp = next({ dir: '.', dev })
-  const handle = nextApp.getRequestHandler()
+  server.use(bodyParser.json())
+  server.use(bodyParser.urlencoded({ extended: true }))
 
-  nextApp.prepare().then(() => {
-    const server = express()
-
-    if (!dev) {
-      // Enforce SSL & HSTS in production
-      server.use(function(req, res, next) {
-        var proto = req.headers['x-forwarded-proto']
-        if (proto === 'https') {
-          res.set({
-            'Strict-Transport-Security': 'max-age=31557600' // one-year
-          })
-          return next()
+  if (shouldAuthenticate) {
+    server.use(
+      session({
+        secret: process.env.GOOGLE_AUTH_COOKIE_SECRET,
+        cookie: {
+          maxAge: 1000 * 60 * 60 * 24 * 30, // month
+          secure: !dev
         }
-        res.redirect('https://' + req.headers.host + req.url)
       })
+    )
+    server.use(passport.initialize())
+    server.use(passport.session())
+    server.use('/auth', authRouter)
+
+    // Check if the request has a user before allowing further.
+    server.use((req, res, next) => {
+      if (req.isAuthenticated()) {
+        next()
+      } else {
+        res.redirect('/auth')
+      }
+    })
+  }
+
+  // Keep track of all connected clients
+  var sseClients = []
+  server.set('clients', sseClients)
+
+  // Server sent events
+  server.get('/stream', (req, res, next) => {
+    let newId = genId()
+    const client = {
+      id: newId,
+      responder: res
+    }
+    server.get('clients').push(client)
+    console.log(`${newId} client connected`)
+
+    const headers = {
+      'Content-Type': 'text/event-stream',
+      Connection: 'keep-alive',
+      'Cache-Control': 'no-cache'
     }
 
-    server.use(bodyParser.json())
-    server.use(bodyParser.urlencoded({ extended: true }))
+    res.writeHead(200, headers)
 
-    if (shouldAuthenticate) {
-      server.use(
-        session({
-          secret: process.env.GOOGLE_AUTH_COOKIE_SECRET,
-          cookie: {
-            maxAge: 1000 * 60 * 60 * 24 * 30, // month
-            secure: !dev
-          }
-        })
+    req.on('close', () => {
+      console.log(`Client dropped: ${newId}\nClients remaining: `)
+      server.set(
+        'clients',
+        server.get('clients').filter(c => c.id !== newId)
       )
-      server.use(passport.initialize())
-      server.use(passport.session())
-      server.use('/auth', authRouter)
-
-      // Check if the request has a user before allowing further.
-      server.use((req, res, next) => {
-        if (req.isAuthenticated()) {
-          next()
-        } else {
-          res.redirect('/auth')
-        }
-      })
-    }
-
-    // Keep track of all connected clients
-    var sseClients = []
-    server.set('clients', sseClients)
-
-    // Server sent events
-    server.get('/stream', (req, res, next) => {
-      let newId = genId()
-      const client = {
-        id: newId,
-        responder: res
-      }
-      server.get('clients').push(client)
-      console.log(`${newId} client connected`)
-
-      const headers = {
-        'Content-Type': 'text/event-stream',
-        Connection: 'keep-alive',
-        'Cache-Control': 'no-cache'
-      }
-
-      res.writeHead(200, headers)
-
-      req.on('close', () => {
-        console.log(`Client dropped: ${newId}\nClients remaining: `)
-        server.set(
-          'clients',
-          server.get('clients').filter(c => c.id !== newId)
-        )
-        console.log(server.get('clients').length)
-        res.end()
-      })
-    })
-
-    server.use('/api/report', reportRouter)
-    server.use('/api/month', monthRouter)
-    server.use('/api/topic', topicRouter)
-
-    server.get('/', (req, res) => {
-      return handle(req, res)
-    })
-
-    server.get('*', (req, res) => {
-      return handle(req, res) // react stuff
-    })
-
-    server.listen(PORT, err => {
-      if (err) {
-        throw err
-      }
-      console.log(`ready at ${HOSTNAME}:${PORT}`)
+      console.log(server.get('clients').length)
+      res.end()
     })
   })
-}
+
+  server.use('/api/report', reportRouter)
+  server.use('/api/month', monthRouter)
+  server.use('/api/topic', topicRouter)
+
+  server.get('/', (req, res) => {
+    return handle(req, res)
+  })
+
+  server.get('*', (req, res) => {
+    return handle(req, res) // react stuff
+  })
+
+  server.listen(PORT, err => {
+    if (err) {
+      throw err
+    }
+    console.log(`ready at ${HOSTNAME}:${PORT}`)
+  })
+})
