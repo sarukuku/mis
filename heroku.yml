@@ -1,7 +1,7 @@
 setup:
   addons:
-    - plan: mongolab:sandbox
-      as: DATABASE
+  - plan: mongolab:sandbox
+    as: DATABASE
 build:
   docker:
     mis: Dockerfile
