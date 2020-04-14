@@ -59,20 +59,17 @@ const checkMonths = async (report, nMonths) => {
 
   while (indexMonthWindow < nMonths) {
     const monthReport = months[indexMonthReport]
-
+    windowDate.setMonth(windowDate.getMonth() + 1)
     if (!!monthReport && windowDate.getMonth() === monthReport.date.getMonth()) {
-      indexMonthReport++
     } else if (!monthReport || monthReport.date.getMonth() > windowDate.getMonth()) {
       months.splice(
         indexMonthReport,
         0,
         await createMonth(id, { name: `${getMonthName(windowDate.getMonth())} ${windowDate.getFullYear()}`, date: windowDate })
       )
-      indexMonthReport++
     }
-
+    indexMonthReport++
     indexMonthWindow++
-    windowDate.setMonth(windowDate.getMonth() + 1)
   }
   report.save()
 
