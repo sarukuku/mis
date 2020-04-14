@@ -53,7 +53,7 @@ const checkMonths = async (report, nMonths) => {
   let indexMonthReport = 0
   let indexMonthWindow = 0
 
-  while (!!months[indexMonthReport] && months[indexMonthReport].date.getMonth() < windowDate.getMonth()) {
+  while (!!months[indexMonthReport] && months[indexMonthReport].date.getMonth() < windowDate.getMonth() + 1) {
     indexMonthReport++
   }
 
