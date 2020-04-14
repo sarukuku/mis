@@ -1,0 +1,11 @@
+setup:
+  addons:
+  - plan: mongolab:sandbox
+    as: MONGODB
+build:
+  docker:
+    web: Dockerfile
+  config:
+    NODE_ENV: production
+run:
+  web: npm start

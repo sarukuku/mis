@@ -9,13 +9,14 @@ const session = require('cookie-session')
 
 const PORT = process.env.PORT || 3000
 const HOSTNAME = process.env.APP_HOSTNAME
+const MONGODB_URI = process.env.MONGODB_URI || 'localhost:27017'
 const dev = process.env.NODE_ENV !== 'production'
 const { reportRouter, monthRouter, topicRouter, authRouter } = require('./routes/index')
 const shouldAuthenticate = process.env.GOOGLE_AUTH_ENABLED
 
 // Connect to the database.
 mongoose
-  .connect(process.env.MONGODB_URI, {
+  .connect(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
