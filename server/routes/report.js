@@ -5,13 +5,17 @@ const { createMonth, getMonthName } = require('../services/month')
 const { updateClients } = require('../utils/sse')
 
 async function getAllReports() {
-  return await Report.find({}).populate({
+  const reports = await Report.find({}).populate({
     path: 'months',
     populate: {
       path: 'topics',
       model: 'Topic'
     }
   })
+  for (let report of reports) {
+    await checkMonths(report, 3)
+  }
+  return reports
 }
 
 router.post('/', async (req, res, next) => {
