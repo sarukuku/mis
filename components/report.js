@@ -2,7 +2,9 @@ import Month from './month/month'
 
 function sortMonths(months) {
   return months.sort((a, b) => {
-    return new Date(a.date).getMonth() >= new Date(b.date).getMonth() ? -1 : 1
+    const dateA = new Date(a.date)
+    const dateB = new Date(b.date)
+    return dateA.getTime() >= dateB.getTime() ? -1 : 1
   })
 }
 
