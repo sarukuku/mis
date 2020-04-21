@@ -18,7 +18,7 @@ export const LabeledInput = ({ value, valueSetter, submitHandler, hint, formClas
         placeholder={hint}
         endAdornment={
           <InputAdornment position="end">
-            <IconButton>
+            <IconButton onClick={submitHandler}>
               <AddIcon />
             </IconButton>
           </InputAdornment>
